@@ -48,6 +48,13 @@ class Patient(models.Model):
 
     notes = models.TextField(null=True, blank=True, max_length=1000)
 
+    #Payment Method
+    card_type = models.CharField(max_length=128)
+    card_number = models.CharField(max_length=16)
+    card_owner = models.CharField(max_length=128)
+    card_CVV = models.CharField(max_length=3, default='')
+    #card_expiration_date = models.DateField(defualt=timezone.now)
+
     doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
     # Related fields:

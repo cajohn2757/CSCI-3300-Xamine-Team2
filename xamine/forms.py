@@ -20,6 +20,7 @@ class PatientInfoForm(forms.ModelForm):
         model = Patient
         fields = [
             'first_name', 'middle_name', 'last_name', 'email_info', 'birth_date', 'phone_number',
+            'card_type', 'card_number', 'card_owner', 'card_CVV',
             'allergy_asthma', 'allergy_xraydye', 'allergy_mridye', 'allergy_latex', 'notes'
             ]
 
@@ -31,6 +32,12 @@ class PatientInfoForm(forms.ModelForm):
             'birth_date': DatePickerInput(format='%m/%d/%Y', options={"useCurrent": False},
                                           attrs={'placeholder': 'mm/dd/yyyy'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control input-phone', 'autocomplete': 'off'}),
+
+            'card_type': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'card_number': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off', 'type': 'password'}),
+            'card_owner': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'card_CVV': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+
             'allergy_asthma': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),
             'allergy_xraydye': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),
             'allergy_mridye': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),

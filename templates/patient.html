@@ -72,6 +72,29 @@
                         <label for="Latex">Latex allergy:</label><br>
                         {{ patient_info.allergy_latex|yesno:'Yes,No' }}
                     </div>
+                    <div class="container">
+                        <hr class="beautiful-line">
+                        <label>Card Information:</label>
+                    </div>
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Card Provider:</label><br>
+                        {{ patient_info.card_type }}
+                    </div>
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Card Number:</label><br>
+                        {{ patient_info.card_number }}
+                    </div>
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Card Holder:</label><br>
+                        {{ patient_info.card_owner }}
+                    </div>
+                    <div class="col-md-6 col-12 mt-1">
+                        <label>Card CVV:</label><br>
+                        {{ patient_info.card_CVV }}
+                    </div>
+                    <div class="container">
+                        <hr class="beautiful-line">
+                    </div>
                     <div class="col-12 mt-1">
                         <label for="textarea">
                             Other Allergies/Notes:
@@ -121,6 +144,30 @@
                         <div class="col-md-3 col-12 mt-1">
                             <label for="Latex">Latex allergy:</label><br>
                             {{ form.allergy_latex }}
+                        </div>
+                        <div class="container">
+                            <hr class="beautiful-line">
+                            <label>Card Information:</label>
+                        </div>
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Card Provider:</label><br>
+                            {{ form.card_type }}
+                        </div>
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Card Number:</label><br>
+                            {{ form.card_number }}
+                        </div>
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Card Holder:</label><br>
+                            {{ form.card_owner }}
+                        </div>
+                        <div class="col-md-6 col-12 mt-1">
+                            <label>Card CVV:</label><br>
+                            {{ form.card_CVV }}
+                        </div>
+                        
+                        <div class="container">
+                            <hr class="beautiful-line">
                         </div>
                         <div class="col-12 mt-1">
                             <label for="textarea">
