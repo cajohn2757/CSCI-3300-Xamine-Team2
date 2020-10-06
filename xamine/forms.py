@@ -37,7 +37,8 @@ class PatientInfoForm(forms.ModelForm):
             'card_number': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off', 'type': 'password'}),
             'card_owner': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'card_CVV': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
-
+            'card_expiration_date': DatePickerInput(format='%m/%Y', options={"useCurrent": False},
+                                                    attrs={'placeholder': 'mm/yyyy'}),
             'allergy_asthma': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),
             'allergy_xraydye': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),
             'allergy_mridye': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),

@@ -52,8 +52,8 @@ class Patient(models.Model):
     card_type = models.CharField(max_length=128)
     card_number = models.CharField(max_length=16)
     card_owner = models.CharField(max_length=128)
-    card_CVV = models.CharField(max_length=3, default='')
-    #card_expiration_date = models.DateField(defualt=timezone.now)
+    card_CVV = models.CharField(max_length=3)
+    card_expiration_date = models.DateField(validators=[check_past_date])
 
     doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 

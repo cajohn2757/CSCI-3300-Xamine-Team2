@@ -92,6 +92,10 @@
                         <label>Card CVV:</label><br>
                         {{ patient_info.card_CVV }}
                     </div>
+                    <div class="col-md-6 col-12 mt-1">
+                        <label>Card Exp. Date:</label><br>
+                        {{ patient_info.card_card_expiration_date }}
+                    </div>
                     <div class="container">
                         <hr class="beautiful-line">
                     </div>
@@ -165,7 +169,10 @@
                             <label>Card CVV:</label><br>
                             {{ form.card_CVV }}
                         </div>
-                        
+                        <div class="col-md-6 col-12 mt-1">
+                            <label>Card Exp. Date:</label><br>
+                            {{ form.card_expiration_date }}
+                        </div>
                         <div class="container">
                             <hr class="beautiful-line">
                         </div>
