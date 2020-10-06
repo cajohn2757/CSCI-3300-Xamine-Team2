@@ -18,3 +18,9 @@ def check_past_date(value):
         raise ValidationError("Birthdate must be in the past.")
     else:
         return value
+
+def check_future_date(value):
+    if value < datetime.date.today():
+        raise ValidationError("Expiration Date must be in the future.")
+    else:
+        return value
