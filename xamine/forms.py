@@ -20,7 +20,7 @@ class PatientInfoForm(forms.ModelForm):
         model = Patient
         fields = [
             'first_name', 'middle_name', 'last_name', 'email_info', 'birth_date', 'phone_number',
-            'card_type', 'card_number', 'card_owner', 'card_CVV',
+            'card_type', 'card_number', 'card_owner', 'card_CVV', 'card_expiration_date',
             'allergy_asthma', 'allergy_xraydye', 'allergy_mridye', 'allergy_latex', 'notes'
             ]
 

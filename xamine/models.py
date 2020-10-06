@@ -5,7 +5,7 @@ from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 
 
-from xamine.validators import validate_file_size, check_past_date
+from xamine.validators import validate_file_size, check_past_date, check_future_date
 
 
 class Level(models.Model):
@@ -53,7 +53,7 @@ class Patient(models.Model):
     card_number = models.CharField(max_length=16)
     card_owner = models.CharField(max_length=128)
     card_CVV = models.CharField(max_length=3)
-    card_expiration_date = models.DateField(validators=[check_past_date])
+    card_expiration_date = models.DateField(validators=[check_future_date])
 
     doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
