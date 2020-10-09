@@ -416,9 +416,29 @@
             </div>
         </div>
         <!-- end analysis section -->
+
+
+        
     {% endif %}
 
+    {% if cur_order.level_id < 5 %}
+      <!-- payment section -->
+      <div class="collapse show" id="modality_info">
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-12">
+              <span class="h4">Total Cost</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mt-2">
+              {% if MODALITY_FORM %}
+                <form method="POST">
+                  {% csrf_token %}
+                  {{ MODALITY_FORM.report }}
 
+    {% endif %}
+    
 
 {% endblock %}
 

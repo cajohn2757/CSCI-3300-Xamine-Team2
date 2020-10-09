@@ -113,7 +113,7 @@ class NewOrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['patient', 'visit_reason', 'imaging_needed', 'modality', 'notes']
+        fields = ['patient', 'visit_reason', 'imaging_needed', 'modality', 'notes', 'price']
 
         widgets = {
             'patient': forms.HiddenInput(),
@@ -121,4 +121,5 @@ class NewOrderForm(forms.ModelForm):
             'imaging_needed': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'modality': forms.Select(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'autocomplete': 'off', 'rows': '3'}),
+            'price': forms.Select(attrs={'class':'form-control'}),
         }

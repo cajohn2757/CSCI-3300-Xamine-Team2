@@ -7,6 +7,11 @@ from django.dispatch.dispatcher import receiver
 
 from xamine.validators import validate_file_size, check_past_date, check_future_date
 
+PRICE_CHOICES = (
+  ('xray',1115),
+  ('mri',1550),
+  ('ct',3275),
+)
 
 class Level(models.Model):
     """ Model to define different points in order workflow """
@@ -124,6 +129,8 @@ class Order(models.Model):
     completed = models.CharField(max_length=64, null=True, blank=True)
     completed_time = models.DateTimeField(null=True, blank=True)
 
+    price = models.IntegerField(choices=PRICE_CHOICES)
+
     # Related fields:
     # -- images: ImageAttachment query set
     # -- secret_keys: OrderKey query set
@@ -169,3 +176,5 @@ def mymodel_delete(sender, instance, **kwargs):
 
     if instance.image:
         instance.image.delete(False)
+
+
