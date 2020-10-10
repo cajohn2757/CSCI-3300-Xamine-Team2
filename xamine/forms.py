@@ -29,16 +29,16 @@ class PatientInfoForm(forms.ModelForm):
             'middle_name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'email_info': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
-            'birth_date': DatePickerInput(format='%m/%d/%Y', options={"useCurrent": False},
-                                          attrs={'placeholder': 'mm/dd/yyyy'}),
+            'birth_date': DatePickerInput(format='%Y-%m-%d', options={"useCurrent": False},
+                                          attrs={'placeholder': 'YYYY-MM-DD'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control input-phone', 'autocomplete': 'off'}),
 
             'card_type': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'card_number': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off', 'type': 'password'}),
             'card_owner': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'card_CVV': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
-            'card_expiration_date': DatePickerInput(format='%m/%Y', options={"useCurrent": False},
-                                                    attrs={'placeholder': 'mm/yyyy'}),
+            'card_expiration_date': DatePickerInput(format='%Y-%m', options={"useCurrent": False},
+                                                    attrs={'placeholder': 'YYYY-MM'}),
             'allergy_asthma': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),
             'allergy_xraydye': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),
             'allergy_mridye': forms.Select(attrs={'class': 'form-control'}, choices=yesnoch),
@@ -55,7 +55,7 @@ class ScheduleForm(forms.ModelForm):
         fields = ['appointment']
 
         widgets = {
-            'appointment': DateTimePickerInput(format='%m/%d/%Y %I:%M %p', options={"useCurrent": True},  
+            'appointment': DateTimePickerInput(format='%Y-%m-%d %I:%M %p', options={"useCurrent": True},
                                                attrs={'placeholder': 'mm/dd/yyyy'})
         }
 
@@ -103,8 +103,8 @@ class PatientLookupForm(forms.ModelForm):
         fields = ['birth_date']
 
         widgets = {
-            'birth_date': DatePickerInput(format='%m/%d/%Y', options={"useCurrent": False},
-                                          attrs={'placeholder': 'mm/dd/yyyy'}),
+            'birth_date': DatePickerInput(format='%Y-%m-%d', options={"useCurrent": False},
+                                          attrs={'placeholder': 'YYYY-MM-DD'}),
         }
 
 
@@ -113,7 +113,7 @@ class NewOrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['patient', 'visit_reason', 'imaging_needed', 'modality', 'notes', 'price']
+        fields = ['patient', 'visit_reason', 'imaging_needed', 'modality', 'notes']
 
         widgets = {
             'patient': forms.HiddenInput(),
@@ -121,5 +121,4 @@ class NewOrderForm(forms.ModelForm):
             'imaging_needed': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'modality': forms.Select(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'autocomplete': 'off', 'rows': '3'}),
-            'price': forms.Select(attrs={'class':'form-control'}),
         }

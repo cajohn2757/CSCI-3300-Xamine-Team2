@@ -1,4 +1,5 @@
 import datetime
+from partial_date import PartialDate
 
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -286,7 +287,7 @@ def schedule_order(request, order_id):
 
         # If we have an appointment key in our post data, check if there are appointments within two hours.
         if request.POST['appointment']:
-            appt = datetime.datetime.strptime(request.POST['appointment'], '%m/%d/%Y %I:%M %p')
+            appt = datetime.datetime.strptime(request.POST['appointment'], '%Y-%m-%d %I:%M %p')
             twohrslater = appt + datetime.timedelta(hours=2)
 
             if appt.date() < datetime.date.today():
@@ -324,9 +325,9 @@ def patient_lookup(request):
     """ Handles patient lookup and order creation """
 
     # Grab a data object from our DateWidget
-    dob = datetime.datetime.strptime(request.POST['birth_date'], '%m/%d/%Y').date()
+    dob = PartialDate(datetime.datetime.strptime(request.POST['birth_date'], '%Y-%m-%d').date(),precision=PartialDate.DAY,)
 
-    if dob > datetime.date.today():
+    if dob > PartialDate(datetime.date.today(), precision=PartialDate.DAY):
         messages = {
             'headline1': 'Birth date must be in the past',
             'headline2': 'Please try again.',
@@ -343,7 +344,7 @@ def patient_lookup(request):
     # prepare context for our page and then render it
     context = {
         'patient_list': patient_list,
-        'date_selected': dob.strftime('%m/%d/%Y'),
+        'date_selected': dob,
         'new_patient_form': PatientInfoForm(),
         'patient_lookup': new_form,
     }

@@ -1,4 +1,5 @@
 import datetime
+from partial_date import PartialDate
 
 from django.core.exceptions import ValidationError
 
@@ -14,13 +15,13 @@ def validate_file_size(value):
 
 
 def check_past_date(value):
-    if value > datetime.date.today():
+    if value > PartialDate(datetime.date.today(), precision=PartialDate.DAY):
         raise ValidationError("Birthdate must be in the past.")
     else:
         return value
 
 def check_future_date(value):
-    if value < datetime.date.today():
+    if value < PartialDate(datetime.date.today(), precision=PartialDate.MONTH):
         raise ValidationError("Expiration Date must be in the future.")
     else:
         return value

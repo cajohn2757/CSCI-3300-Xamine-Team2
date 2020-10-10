@@ -3,15 +3,10 @@ from django.db import models
 from django.utils import timezone
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
-
+from partial_date import PartialDateField
 
 from xamine.validators import validate_file_size, check_past_date, check_future_date
 
-PRICE_CHOICES = (
-  ('xray',1115),
-  ('mri',1550),
-  ('ct',3275),
-)
 
 class Level(models.Model):
     """ Model to define different points in order workflow """
@@ -42,7 +37,7 @@ class Patient(models.Model):
     middle_name = models.CharField(max_length=128, blank=True, null=True)
     last_name = models.CharField(max_length=128)
     email_info = models.EmailField()
-    birth_date = models.DateField(validators=[check_past_date])
+    birth_date = PartialDateField(validators=[check_past_date])
     phone_number = models.CharField(max_length=32)
 
     # Medical information
@@ -53,12 +48,12 @@ class Patient(models.Model):
 
     notes = models.TextField(null=True, blank=True, max_length=1000)
 
-    #Payment Method
+    # Payment Method
     card_type = models.CharField(max_length=128)
     card_number = models.CharField(max_length=16)
     card_owner = models.CharField(max_length=128)
     card_CVV = models.CharField(max_length=3)
-    card_expiration_date = models.DateField(validators=[check_future_date])
+    card_expiration_date = PartialDateField(validators=[check_future_date])
 
     doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
@@ -80,6 +75,7 @@ class ModalityOption(models.Model):
     """ List of available modality options """
 
     name = models.CharField(max_length=64)
+    price = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -129,8 +125,6 @@ class Order(models.Model):
     completed = models.CharField(max_length=64, null=True, blank=True)
     completed_time = models.DateTimeField(null=True, blank=True)
 
-    price = models.IntegerField(choices=PRICE_CHOICES)
-
     # Related fields:
     # -- images: ImageAttachment query set
     # -- secret_keys: OrderKey query set
@@ -176,5 +170,13 @@ def mymodel_delete(sender, instance, **kwargs):
 
     if instance.image:
         instance.image.delete(False)
+
+class Insurance(models.Model):
+    """Insurance company choices"""
+
+    name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.name
 
 
