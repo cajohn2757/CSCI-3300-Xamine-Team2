@@ -325,9 +325,10 @@ def patient_lookup(request):
     """ Handles patient lookup and order creation """
 
     # Grab a data object from our DateWidget
-    dob = PartialDate(datetime.datetime.strptime(request.POST['birth_date'], '%Y-%m-%d').date(),precision=PartialDate.DAY,)
+    dob = datetime.datetime.strptime(request.POST['birth_date'], '%Y-%m-%d').date()
 
-    if dob > PartialDate(datetime.date.today(), precision=PartialDate.DAY):
+
+    if dob > datetime.date.today():
         messages = {
             'headline1': 'Birth date must be in the past',
             'headline2': 'Please try again.',
@@ -435,7 +436,7 @@ def remove_file(request, img_id):
 
 
 def public_order(request):
-    """ Handles dispplaying order based on secret key """
+    """ Handles displaying order based on secret key """
 
     # Get secret key from GET parameters
     key = request.GET.get('key')

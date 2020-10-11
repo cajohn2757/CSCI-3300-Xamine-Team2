@@ -244,32 +244,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <br>
-                <div class="mb-3 h5 text-center">Completed Orders</div>
-                <table class="table table-sm text-center">
-                    <thead>
-                    <tr>
-                        <th>Order #</th>
-                        <th>Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for order in complete_orders %}
-                            <tr>
-                                <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.id }}</a></td>
-                                <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.price }}</a></td>
-                                <td>{{ order.last_edit|date:'m/d/Y' }}</td>
-                            </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="3" class="text-center text-muted">
-                                    No orders
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <br>
             </div>
         </div>
     </div>
