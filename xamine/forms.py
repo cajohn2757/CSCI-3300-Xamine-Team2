@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from intl_tel_input.widgets import IntlTelInputWidget
-from xamine.models import Patient, Order, Image
+from xamine.models import Patient, Order, Image, MedicationOrder
 
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
 
@@ -129,7 +129,7 @@ class MedicationOrderForm(forms.ModelForm):
 
     class Meta:
         model = MedicationOrder
-        field = ['order','name', 'quantity', 'price']
+        fields = ['order','name', 'quantity', 'price']
 
         widgets = {
             'order': forms.HiddenInput(),
