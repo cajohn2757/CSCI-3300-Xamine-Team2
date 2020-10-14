@@ -15,13 +15,14 @@ def validate_file_size(value):
 
 
 def check_past_date(value):
-    if value > PartialDate(datetime.date.today(), precision=PartialDate.DAY):
+    if value > datetime.date.today():
         raise ValidationError("Birthdate must be in the past.")
     else:
         return value
 
+
 def check_future_date(value):
-    if value < PartialDate(datetime.date.today(), precision=PartialDate.MONTH):
+    if value < datetime.date.today():
         raise ValidationError("Expiration Date must be in the future.")
     else:
         return value

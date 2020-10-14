@@ -327,7 +327,6 @@ def patient_lookup(request):
     # Grab a data object from our DateWidget
     dob = datetime.datetime.strptime(request.POST['birth_date'], '%Y-%m-%d').date()
 
-
     if dob > datetime.date.today():
         messages = {
             'headline1': 'Birth date must be in the past',

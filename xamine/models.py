@@ -38,7 +38,7 @@ class Patient(models.Model):
     middle_name = models.CharField(max_length=128, blank=True, null=True)
     last_name = models.CharField(max_length=128)
     email_info = models.EmailField()
-    birth_date = PartialDateField(validators=[check_past_date])
+    birth_date = models.DateField(validators=[check_past_date])
     phone_number = models.CharField(max_length=32)
 
     # Medical information
@@ -54,7 +54,7 @@ class Patient(models.Model):
     card_number = models.CharField(max_length=16)
     card_owner = models.CharField(max_length=128)
     card_CVV = models.CharField(max_length=3)
-    card_expiration_date = PartialDateField(validators=[check_future_date])
+    card_expiration_date = models.DateField(validators=[check_future_date])
 
     doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
