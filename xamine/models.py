@@ -185,7 +185,8 @@ class MedicationOrder(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name= 'med_order')
     name = models.CharField(max_length=256)
     quantity = models.IntegerField()  # in mg
-    price = models.IntegerField()  # in USD
+    price = models.IntegerField(null=True, blank=True)  # in USD
+    billed = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

@@ -136,4 +136,5 @@ class MedicationOrderForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'on'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'billed': forms.HiddenInput(),
         }
