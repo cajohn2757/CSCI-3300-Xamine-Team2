@@ -122,3 +122,18 @@ class NewOrderForm(forms.ModelForm):
             'modality': forms.Select(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'autocomplete': 'off', 'rows': '3'}),
         }
+
+
+class MedicationOrderForm(forms.ModelForm):
+    """ Handles Patient Medicaiton Perscription Inputs """
+
+    class Meta:
+        model = MedicationOrder
+        field = ['order','name', 'quantity', 'price']
+
+        widgets = {
+            'order': forms.HiddenInput(),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'on'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+        }
