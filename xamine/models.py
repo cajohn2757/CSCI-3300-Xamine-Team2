@@ -190,7 +190,7 @@ class MedicationOrder(models.Model):
     billed = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return f"#{self.order.id} - {self.order.patient.full_name}"
 
 
 class Material(models.Model):
@@ -211,4 +211,5 @@ class MaterialOrder(models.Model):
 
     def __str__(self):
         return f"#{self.order.id} - {self.order.patient.full_name}"
+
 
