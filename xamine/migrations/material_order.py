@@ -7,7 +7,14 @@ def add_data_list(apps, schema_editor):
     materials = [
         'X-Ray Film',
         'X-Ray Dye',
-        'Something else',
+        'X-Ray Compensating Filter',
+        'Lead Blockers',
+        'Film Viewing Accessories',
+        'CT Slickers',
+        'Ultrasound Gels',
+        'Ultrasound Warmers',
+        'MRI Slickers',
+        'Disposable Skin Markers',
     ]
     add_data(apps, schema_editor, app='xamine', model='Material', items=materials)
 
