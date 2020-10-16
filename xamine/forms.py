@@ -149,7 +149,7 @@ class MaterialOrderForm(forms.ModelForm):
 
         widgets = {
             'order': forms.HiddenInput(),
-            'material': forms.Select(attrs={'class': 'form-control'}),
+            'material': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'billed': forms.HiddenInput(),

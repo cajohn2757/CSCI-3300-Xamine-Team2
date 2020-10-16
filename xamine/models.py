@@ -210,5 +210,5 @@ class MaterialOrder(models.Model):
     billed = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return f"#{self.order.id} - {self.order.patient.full_name}"
 

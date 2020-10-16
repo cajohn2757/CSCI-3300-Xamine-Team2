@@ -467,14 +467,14 @@ def show_message(request, headlines):
 def get_order_cost(request, order_num):
     running_order_cost = 0
     cur_order = Order.objects.get(pk=order_num)
-        # Check if we have a POST request
+    # Check if we have a POST request
     if request.method == 'POST':
 
-         # Check if level and permissions for the logged in user are both receptionists or admins
+        # Check if level and permissions for the logged in user are both receptionists or admins
         if cur_order.level_id == 1 and is_in_group(request.user, ['Technicians', 'Radiologists']):
             order_modality = Order.objects.values_list('modality_id').get(pk = order_num)[0]
             modality_info = ModalityOption.objects.values_list('name', 'price').get(pk = order_modality) #cost of modality to variable
             medication_info = MedicationOrder.objects.values_list('name', 'quantity', 'price').get(order_id = order_num)
-            materials_list = MaterialOrder.object.values_list('materialname', 'cost of material', 'materialname', 'cost of material', 'materialname', 'cost of material', '...')#cost of materials to variable
+            materials_list = MaterialOrder.object.values_list('material', 'cost of material', 'materialname', 'cost of material', 'materialname', 'cost of material', '...')#cost of materials to variable
 
             return render(request)
