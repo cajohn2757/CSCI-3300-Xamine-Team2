@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from intl_tel_input.widgets import IntlTelInputWidget
-from xamine.models import Patient, Order, Image, MedicationOrder
+from xamine.models import Patient, Order, Image, MedicationOrder, MaterialOrder
 
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
 
@@ -134,6 +134,22 @@ class MedicationOrderForm(forms.ModelForm):
         widgets = {
             'order': forms.HiddenInput(),
             'name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'on'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'billed': forms.HiddenInput(),
+        }
+
+
+class MaterialOrderForm(forms.ModelForm):
+    """ Handles Patient Material Usage Inputs """
+
+    class Meta:
+        model = MaterialOrder
+        fields = ['material', 'quantity', 'price', 'billed']
+
+        widgets = {
+            'order': forms.HiddenInput(),
+            'name': forms.SelectMultiple(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'billed': forms.HiddenInput(),

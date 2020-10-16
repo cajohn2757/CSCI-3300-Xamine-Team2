@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption
+from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder
 from xamine.forms import ImageUploadForm
 from xamine.forms import NewOrderForm, PatientLookupForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
@@ -475,6 +475,6 @@ def get_order_cost(request, order_num):
             order_modality = Order.objects.values_list('modality_id').get(pk = order_num)[0]
             modality_info = ModalityOption.objects.values_list('name', 'price').get(pk = order_modality) #cost of modality to variable
             medication_info = MedicationOrder.objects.values_list('name', 'quantity', 'price').get(order_id = order_num)
-            materials_list = ['materialname', 'cost of material', 'materialname', 'cost of material', 'materialname', 'cost of material', '...']#cost of materials to variable
+            materials_list = MaterialOrder.object.values_list('materialname', 'cost of material', 'materialname', 'cost of material', 'materialname', 'cost of material', '...')#cost of materials to variable
 
             return render(request)

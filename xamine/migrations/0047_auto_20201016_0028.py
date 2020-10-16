@@ -34,7 +34,7 @@ def add_data(apps, schema_editor, app, model, items):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('xamine', '0046_material_materialorder'),
+        ('xamine', '0046_auto_20201016_0019'),
     ]
 
     operations = [
