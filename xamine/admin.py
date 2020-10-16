@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from xamine.models import Patient, Level, Order, Image, ModalityOption, Team, AppSetting, Material
+from xamine.models import Patient, Level, Order, Image, ModalityOption, Team, AppSetting, Material, MaterialOrder, MedicationOrder
 
 admin.site.site_header = 'Xamine RIS Admin'
 
@@ -28,3 +28,5 @@ admin.site.register(AppSetting)
 admin.site.register(ModalityOption)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Material)
+admin.site.register(MaterialOrder)
+admin.site.register(MedicationOrder)

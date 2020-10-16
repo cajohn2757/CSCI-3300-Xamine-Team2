@@ -204,7 +204,7 @@ class Material(models.Model):
 class MaterialOrder(models.Model):
     """ New Material Order """
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='mat_order')
-    material = models.ForeignKey(Material, on_delete=models.DO_NOTHING, related_name='materials')
+    name = models.ForeignKey(Material, on_delete=models.DO_NOTHING, related_name='materials')
     quantity = models.IntegerField()  # in mg
     price = models.IntegerField(null=True, blank=True)  # in USD
     billed = models.IntegerField(default=0)
