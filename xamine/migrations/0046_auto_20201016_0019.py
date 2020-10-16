@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
 
                 ('billed', models.IntegerField(default=0)),
 
-                ('name', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='materials', to='xamine.material')),
+                ('material', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='materials', to='xamine.material')),
 
                 ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mat_order', to='xamine.order')),
 

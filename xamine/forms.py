@@ -129,7 +129,7 @@ class MedicationOrderForm(forms.ModelForm):
 
     class Meta:
         model = MedicationOrder
-        fields = ['order','name', 'quantity', 'price']
+        fields = ['order', 'name', 'quantity', 'price']
 
         widgets = {
             'order': forms.HiddenInput(),
@@ -149,7 +149,7 @@ class MaterialOrderForm(forms.ModelForm):
 
         widgets = {
             'order': forms.HiddenInput(),
-            'name': forms.SelectMultiple(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'material': forms.Select(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'billed': forms.HiddenInput(),
