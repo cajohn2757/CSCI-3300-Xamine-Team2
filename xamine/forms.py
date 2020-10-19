@@ -129,7 +129,7 @@ class MedicationOrderForm(forms.ModelForm):
 
     class Meta:
         model = MedicationOrder
-        fields = ['order', 'name', 'quantity', 'price']
+        fields = ['order', 'name', 'quantity', 'price', 'billed']
 
         widgets = {
             'order': forms.HiddenInput(),
@@ -145,7 +145,7 @@ class MaterialOrderForm(forms.ModelForm):
 
     class Meta:
         model = MaterialOrder
-        fields = ['material', 'quantity', 'price', 'billed']
+        fields = ['order', 'material', 'quantity', 'price', 'billed']
 
         widgets = {
             'order': forms.HiddenInput(),
