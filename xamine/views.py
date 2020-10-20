@@ -475,6 +475,9 @@ def get_order_cost(request, order_num):
             order_modality = Order.objects.values_list('modality_id').get(pk = order_num)[0]
             modality_info = ModalityOption.objects.values_list('name', 'price').get(pk = order_modality) #cost of modality to variable
             medication_info = MedicationOrder.objects.values_list('name', 'quantity', 'price').get(order_id = order_num)
-            materials_list = MaterialOrder.object.values_list('material', 'cost of material', 'materialname', 'cost of material', 'materialname', 'cost of material', '...')#cost of materials to variable
+            materials_info = MaterialOrder.object.values_list('name', 'price').get(order_id = order_num)
+            Totals_info =(modality_info, medication_info, materials_info)
+
+            # Still need to setup context and reference .html document
 
             return render(request)
