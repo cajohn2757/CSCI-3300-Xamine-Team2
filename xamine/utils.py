@@ -1,5 +1,5 @@
 from xamine.models import AppSetting
-
+from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 
 def get_setting(name, default=None):
     """ Get the setting from the database """
@@ -38,3 +38,29 @@ def get_image_files(images):
     # Return thumbnail list established above
     return thumbnails
 
+def get_order_cost(order_num):
+    running_order_cost = 0
+    cur_order = Order.objects.get(pk=order_num)
+    # Check if we have a POST request
+
+    order_modality = Order.objects.values_list('modality_id').get(pk = order_num)[0]
+    modality_info = ModalityOption.objects.values_list('name', 'price').get(pk = order_modality) #cost of modality to variable
+    medication_info = MedicationOrder.objects.values_list('name', 'quantity', 'price').get(order_id = order_num)
+    materials_info = MaterialOrder.objects.values_list('name', 'price').get(order_id = order_num)
+    totals_info =(modality_info, medication_info, materials_info)
+
+
+    # Still need to setup context and reference .html document
+
+    return totals_info # totals info list
+
+def update_balance(patientid):
+
+   # if request.method == 'POST':
+    try:
+        initial_cost = Balance.objects.values_list('totalBalance').get(patient=patientid)
+        order_list =  Order.objects.values_list('id', 'modality_id').filter(patient_id = patientid)
+        for x in order_list.count():
+            print(order_list[0])
+    except Balance.DoesNotExist:
+        return "no" #fill balance database

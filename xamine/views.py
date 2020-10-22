@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder
+from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 from xamine.forms import ImageUploadForm
 from xamine.forms import NewOrderForm, PatientLookupForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
@@ -461,24 +461,3 @@ def public_order(request):
 def show_message(request, headlines):
     """ Handles showing error messages """
     return render(request, 'message.html', headlines)
-
-
-@login_required
-def get_order_cost(request, order_num):
-    running_order_cost = 0
-    cur_order = Order.objects.get(pk=order_num)
-    # Check if we have a POST request
-    if request.method == 'POST':
-
-        # Check if level and permissions for the logged in user are both receptionists or admins
-        if cur_order.level_id == 1 and is_in_group(request.user, ['Technicians', 'Radiologists']):
-            order_modality = Order.objects.values_list('modality_id').get(pk = order_num)[0]
-            modality_info = ModalityOption.objects.values_list('name', 'price').get(pk = order_modality) #cost of modality to variable
-            medication_info = MedicationOrder.objects.values_list('name', 'quantity', 'price').get(order_id = order_num)
-            materials_info = MaterialOrder.object.values_list('name', 'price').get(order_id = order_num)
-            totals_info =(modality_info, medication_info, materials_info)
-
-
-            # Still need to setup context and reference .html document
-
-            return totals_info # totals info list
