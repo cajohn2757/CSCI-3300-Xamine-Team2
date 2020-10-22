@@ -67,7 +67,7 @@ class Patient(models.Model):
             return f"{self.first_name} {self.middle_name} {self.last_name}"
         else:
             return f"{self.first_name} {self.last_name}"
-            
+
     def __str__(self):
         return f"{self.full_name} ({self.id})"
 
@@ -101,7 +101,7 @@ class Order(models.Model):
 
     # Patient Info
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="orders")
-    appointment = models.DateTimeField(null=True, blank=True,)
+    appointment = models.DateTimeField(null=True, blank=True, )
     team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=False, related_name='orders')
 
     # Automatically record timestamp info
@@ -113,7 +113,7 @@ class Order(models.Model):
 
     # Order information
     visit_reason = models.CharField(max_length=128)
-    imaging_needed = models.CharField(max_length=128) 
+    imaging_needed = models.CharField(max_length=128)
     modality = models.ForeignKey(ModalityOption, on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True, max_length=1000)
 
@@ -155,7 +155,7 @@ class Image(models.Model):
 
 class OrderKey(models.Model):
     """ Secret Key for authenticating patient viewing of orders """
-    
+
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='secret_keys')
     secret_key = models.CharField(max_length=256)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -172,6 +172,7 @@ def mymodel_delete(sender, instance, **kwargs):
     if instance.image:
         instance.image.delete(False)
 
+
 class Insurance(models.Model):
     """Insurance company choices"""
 
@@ -183,7 +184,7 @@ class Insurance(models.Model):
 
 class MedicationOrder(models.Model):
     """ New Medication Order """
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name= 'med_order')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='med_order')
     name = models.CharField(max_length=256)
     quantity = models.IntegerField()  # in mg
     price = models.IntegerField(null=True, blank=True)  # in USD
@@ -213,3 +214,12 @@ class MaterialOrder(models.Model):
         return f"#{self.order.id} - {self.order.patient.full_name}"
 
 
+class Balance(models.Model):
+    """Stores a particular patients balance"""
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient_id')
+    totalBalance = models.IntegerField()
+    amountPaid = models.IntegerField()
+
+    def __str__(self):
+        return f"#{self.patient} - {self.totalBalance} - {self.amountPaid}"
+        # ask corey to check this line. Not sure what its supposed to do.
