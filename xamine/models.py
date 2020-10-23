@@ -115,6 +115,7 @@ class Order(models.Model):
     visit_reason = models.CharField(max_length=128)
     imaging_needed = models.CharField(max_length=128)
     modality = models.ForeignKey(ModalityOption, on_delete=models.DO_NOTHING)
+    modality_billed = models.IntegerField(default=0)
     notes = models.TextField(null=True, blank=True, max_length=1000)
 
     # Radiology information
