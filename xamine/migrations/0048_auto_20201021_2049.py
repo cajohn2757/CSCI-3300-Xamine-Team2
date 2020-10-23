@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('xamine', '0047_auto_20201016_0028'),
+        ('xamine', '0048_auto_20201021_1831'),
     ]
 
     operations = [
