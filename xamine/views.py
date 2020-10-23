@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder
+from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 from xamine.forms import ImageUploadForm
 from xamine.forms import NewOrderForm, PatientLookupForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
