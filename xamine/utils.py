@@ -1,6 +1,7 @@
 from xamine.models import AppSetting
 from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 from django.db.models import F
+import os
 
 def get_setting(name, default=None):
     """ Get the setting from the database """
@@ -102,3 +103,7 @@ def update_balance(patientid):
             # totalinfo.append(info)
     except Balance.DoesNotExist:
         return "no" #fill balance database
+
+
+def load_init_vals():
+    os.system('cmd /c "python manage.py loaddata initial-data.json"')

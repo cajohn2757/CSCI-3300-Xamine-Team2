@@ -1,0 +1,29 @@
+[
+  {
+    "model": "xamine.ModalityOption",
+    "pk": 1,
+    "fields":
+    {
+      "name": "MRI",
+      "price": 12345
+    }
+  },
+  {
+    "model": "xamine.ModalityOption",
+    "pk": 2,
+    "fields":
+    {
+      "name": "X-Ray",
+      "price": 290
+    }
+  },
+  {
+  "model": "xamine.ModalityOption",
+    "pk": 3,
+    "fields":
+    {
+      "name": "CAT Scan",
+      "price": 5000
+    }
+  }
+]
