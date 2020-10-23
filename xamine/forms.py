@@ -1,9 +1,9 @@
 from django import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
+from colorful.fields import RGBColorField
 from intl_tel_input.widgets import IntlTelInputWidget
-from xamine.models import Patient, Order, Image, MedicationOrder, MaterialOrder
+from xamine.models import Patient, Order, Image, MedicationOrder, MaterialOrder, ColorScheme
 
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
 
@@ -153,4 +153,17 @@ class MaterialOrderForm(forms.ModelForm):
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'billed': forms.HiddenInput(),
+        }
+
+class ColorSchemeForm(forms.ModelForm):
+    """Handles ColorScheme Inputs"""
+
+    class Meta:
+        model = ColorScheme
+        fields = ['mainTheme', 'mainPrimary', 'mainSecondary']
+
+        widgets = {
+            'mainTheme': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF']),
+            'mainPrimary': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF']),
+            'mainSecondary': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF'])
         }

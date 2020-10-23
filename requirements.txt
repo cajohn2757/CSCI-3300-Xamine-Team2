@@ -13,3 +13,4 @@ django-extensions
 sendgrid
 django-cleanup
 django_partial_date
+django-colorful

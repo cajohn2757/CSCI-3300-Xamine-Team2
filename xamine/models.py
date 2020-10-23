@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from partial_date import PartialDateField
+from colorful.fields import RGBColorField
 
 from xamine.validators import validate_file_size, check_past_date, check_future_date
 
@@ -29,6 +30,16 @@ class AppSetting(models.Model):
     def __str__(self):
         return self.name
 
+class ColorScheme(models.Model):
+    """Model to hold Color Scheme for program"""
+    name = models.CharField(max_length=32)
+
+    mainTheme = RGBColorField()
+    mainPrimary = RGBColorField()
+    mainSecondary = RGBColorField()
+
+    def __str__(self):
+        return self.name
 
 class Patient(models.Model):
     """ Model to track the patient and their history """
