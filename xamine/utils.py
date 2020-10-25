@@ -69,40 +69,42 @@ def update_balance(patientid):
     """Calls get_order_cost for all orders of a patient and updates database"""
    # if request.method == 'POST':
     try:
-        initial_cost = Balance.objects.values_list('totalBalance').get(patient=patientid)
-        running_cost = 0
-        order_list =  Order.objects.values_list('id', 'modality_id', 'modality_billed').filter(patient_id = patientid)
-        totalinfo = []
-        for x in order_list:
-            info = get_order_cost(x[0])
-            print(info)
-            if x[2] == 0: # Modality
-                running_cost += info[0][1]
-                order_row = Order.objects.get(pk = x[0])
-                order_row.modality_billed = F('modality_billed') + 1
-                order_row.save()
-            try:
-                if info[1][2] == 0: # Medication
-                    running_cost += info[1][3]
-                    medication_row = MedicationOrder.objects.get(order = x[0])
-                    medication_row.billed = F('billed') + 1
-                    medication_row.save()
-            except:
-                pass
-            try:
-                if info[2][2] == 0: # Materials
-                    running_cost += info[2][3]
-                    material_row = MaterialOrder.objects.get(order = x[0])
-                    material_row.billed = F('billed') + 1
-                    material_row.save()
-            except:
-                pass
-
-
-
-            # totalinfo.append(info)
+        check = Balance.objects.values_list('totalBalance').get(patient_id = patientid)[0]
     except Balance.DoesNotExist:
-        return "no" #fill balance database
+        temp = Balance(patient_id = patientid)
+        temp.save()
+
+    running_cost = 0
+    order_list =  Order.objects.values_list('id', 'modality_id', 'modality_billed').filter(patient_id = patientid)
+    totalinfo = []
+    for x in order_list:
+        info = get_order_cost(x[0])
+        if x[2] == 0: # Modality
+            running_cost += info[0][1]
+            order_row = Order.objects.get(pk = x[0])
+            order_row.modality_billed = F('modality_billed') + 1
+            order_row.save()
+        try:
+            if info[1][2] == 0: # Medication
+                running_cost += info[1][3]
+                medication_row = MedicationOrder.objects.get(order = x[0])
+                medication_row.billed = F('billed') + 1
+                medication_row.save()
+        except:
+            pass
+        try:
+            if info[2][2] == 0: # Materials
+                running_cost += info[2][3]
+                material_row = MaterialOrder.objects.get(order = x[0])
+                material_row.billed = F('billed') + 1
+                material_row.save()
+        except:
+            pass
+
+    balancerow = Balance.objects.get(patient_id=patientid)
+    balancerow.totalBalance = F('totalBalance') + running_cost
+    balancerow.save()
+            # totalinfo.append(info)
 
 
 def load_init_vals():
