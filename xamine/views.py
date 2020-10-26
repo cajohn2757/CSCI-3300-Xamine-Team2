@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 from xamine.forms import ImageUploadForm
-from xamine.forms import NewOrderForm, PatientLookupForm
+from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
 from xamine.utils import is_in_group, get_image_files
 from xamine.tasks import send_notification
@@ -481,3 +481,70 @@ def get_order_cost(request, order_num):
             # Still need to setup context and reference .html document
 
             return render(request)
+
+
+def med_order(request, order_id, med_order_id):
+
+    # Attempt to grab order via order_id from url. 404 if not found.
+    try:
+        cur_order = Order.objects.get(pk=order_id)
+        cur_med_order = MedicationOrder.objects.get(pk=med_order_id)
+    except Order.DoesNotExist:
+        raise Http404
+
+    # Check if it is a post request. If so, build our form with the post data.
+    if request.method == 'POST':
+        form = MedicationOrderForm(data=request.POST, instance=cur_med_order)
+
+
+        # Ensure form is valid. If so, save. If not, show error.
+        if form.is_valid():
+            form.save()
+        else:
+            messages = {
+                'headline1': 'Invalid Form',
+                'headline2': 'Please try again.',
+                'headline3': f"{form.errors}"
+            }
+            return show_message(request, messages)
+
+    # Set up the variables for our template
+    context = {
+        'cur_order': cur_order,
+        'cur_med_order': cur_med_order,
+        'form': MedicationOrderForm(instance=cur_med_order),
+    }
+    return render(request, 'med_order.html', context)
+
+
+def mat_order(request, order_id, mat_order_id):
+
+    # Attempt to grab order via order_id from url. 404 if not found.
+    try:
+        cur_order = Order.objects.get(pk=order_id)
+        cur_mat_order = MaterialOrder.objects.get(pk=mat_order_id)
+    except Order.DoesNotExist:
+        raise Http404
+
+    # Check if it is a post request. If so, build our form with the post data.
+    if request.method == 'POST':
+        form = MaterialOrderForm(data=request.POST, instance=cur_mat_order)
+
+        # Ensure form is valid. If so, save. If not, show error.
+        if form.is_valid():
+            form.save()
+        else:
+            messages = {
+                'headline1': 'Invalid Form',
+                'headline2': 'Please try again.',
+                'headline3': f"{form.errors}"
+            }
+            return show_message(request, messages)
+
+    # Set up the variables for our template
+    context = {
+        'cur_order': cur_order,
+        'cur_mat_order': cur_mat_order,
+        'form': MaterialOrderForm(instance=cur_mat_order),
+    }
+    return render(request, 'material_order.html', context)

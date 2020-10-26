@@ -125,7 +125,7 @@ class NewOrderForm(forms.ModelForm):
 
 
 class MedicationOrderForm(forms.ModelForm):
-    """ Handles Patient Medicaiton Perscription Inputs """
+    """ Handles Patient Medication Prescription Inputs """
 
     class Meta:
         model = MedicationOrder
@@ -149,11 +149,12 @@ class MaterialOrderForm(forms.ModelForm):
 
         widgets = {
             'order': forms.HiddenInput(),
-            'material': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'material': forms.Select(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'billed': forms.HiddenInput(),
         }
+
 
 class ColorSchemeForm(forms.ModelForm):
     """Handles ColorScheme Inputs"""

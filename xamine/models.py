@@ -196,11 +196,11 @@ class Insurance(models.Model):
 
 class MedicationOrder(models.Model):
     """ New Medication Order """
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name= 'med_order')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name= 'med_order', null=True)
     name = models.CharField(max_length=256)
     quantity = models.IntegerField()  # in mg
     price = models.IntegerField(null=True, blank=True)  # in USD
-    billed = models.IntegerField(default=0)
+    billed = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return f"#{self.order.id} - {self.order.patient.full_name}"
@@ -216,11 +216,11 @@ class Material(models.Model):
 
 class MaterialOrder(models.Model):
     """ New Material Order """
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='mat_order')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='mat_order', null=True)
     material = models.ForeignKey(Material, on_delete=models.DO_NOTHING)
     quantity = models.IntegerField()  # in mg
     price = models.IntegerField(null=True, blank=True)  # in USD
-    billed = models.IntegerField(default=0)
+    billed = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return f"#{self.order.id} - {self.order.patient.full_name}"

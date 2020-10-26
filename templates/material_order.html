@@ -1,0 +1,118 @@
+{% extends 'base/base.html' %}
+{% load phone_number %}
+{% load crispy_forms_filters %}
+
+{% block header %}
+
+    {% load group_auth %}
+    {{ form.media.css }}
+
+    <style>
+        .orderlink { color: black; }
+
+        label {
+            font-weight: bold;
+        }
+        label2 {
+
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <span class="display-4">
+                    Material Order
+                </span>
+                <a data-toggle="collapse" href=".mat-order" class="text-muted small ml-2 collapse show mat-order">
+                    Edit
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <div class="invisible">
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Order ID:</label>
+                        {{ cur_order.id }}
+                    </div>
+                </div>
+                <div class="row collapse show mat-order">
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Material:</label>
+                        {{ cur_mat_order.material }}
+                    </div>
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Quantity:</label>
+                        {{ cur_mat_order.quantity }}
+                    </div>
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Price:</label><label2> $</label2>
+                        {{ cur_mat_order.price }}
+                    </div>
+                    <div class="container">
+                        <hr class="beautiful-line">
+                    </div>
+                </div>
+                <form id="material_order_form" method="POST">
+                    {% csrf_token %}
+                    <div class="invisible">
+                            <label>Order ID:</label>
+                            {{ form.order|default_if_none:'cur_order.id' }}
+                    </div>
+                    <div class="row collapse mat-order">
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Material:</label><br>
+                            {{ form.material }}
+                        </div>
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Quantity:</label><br>
+                            {{ form.quantity }}
+                        </div>
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Price:</label><br>
+                            {{ form.price }}
+                        </div>
+                        <div class="container">
+                            <hr class="beautiful-line">
+                        </div>
+                        <div class="col mt-3 ">
+                            <button class="btn btn-primary">Save Material Order</button>
+                            <a class="btn btn-secondary" data-toggle="collapse" href=".mat-order" onclick="resetForm()">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block afterscript %}
+
+    <!-- start form media -->
+    {{ form.media.js }}
+    <!-- end form media -->
+
+    <!-- start cleave media -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.5.10/cleave.min.js" integrity="sha256-lqWAcasN+EP6bxH3+SBODfrydkyHQ7FDwcI44sZeff4=" crossorigin="anonymous"></script>
+    <script src="https://nosir.github.io/cleave.js/dist/cleave-phone.i18n.js"></script>
+    <!-- end cleave media -->
+
+    <script>
+        function resetForm() {
+            document.getElementById("material_order_form").reset();
+        }
+
+        var cleavePhone = new Cleave('.input-phone', {
+            phone: true,
+            phoneRegionCode: 'US'
+        });
+
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+        });
+    </script>
+{% endblock %}
