@@ -32,7 +32,7 @@ class AppSetting(models.Model):
 
 class ColorScheme(models.Model):
     """Model to hold Color Scheme for program"""
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, blank=True, null=True)
 
     mainTheme = RGBColorField()
     mainPrimary = RGBColorField()

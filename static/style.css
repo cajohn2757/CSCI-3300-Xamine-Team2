@@ -1,0 +1,153 @@
+:root {
+    /* dark mode color template */
+    --dkmd_dkstblue: ;
+    --dkmd_dkblue: ;
+    --dkmd_blue: ;
+    --dkmd_ltblue: ;
+
+    /* hopsital color template */
+    --hs_white: ;
+    --hs_teal: ;
+    --hs_blue: ;
+    --hs_black: ;
+
+    /* high contrast color template */
+    --hc_red: ;
+    --hc_yellow: ;
+    --hc_ltblue: ;
+    --hc_blue: ;
+    --hc_purple: ;
+}
+head {
+
+}
+h3 {
+
+}
+h4{
+
+}
+h5{
+
+}
+hr{
+
+}
+body {
+
+}
+p {
+
+}
+a {
+
+}
+img {
+
+}
+li {
+
+}
+span {
+
+}
+nav {
+
+}
+form {
+
+}
+button {
+
+}
+label {
+
+}
+table {
+
+}
+thead {
+
+}
+tbody {
+
+}
+textarea {
+
+}
+#navbarsEcampleDefault {
+
+}
+#physician_section {
+
+}
+#new_order {
+
+}
+#exampleModalLabel {
+
+}
+#reception_section {
+
+}
+#imaging_section {
+
+}
+#analysis_section {
+
+}
+#patient_info {
+
+}
+#imaging_info {
+
+}
+#order_info {
+
+}
+#scheduleModal {
+
+}
+#checkInModal {
+
+}
+#edit_order_form {
+
+}
+#imageFormModalLabel{
+
+}
+#imageFormModalBtn {
+
+}
+#exampleModal {
+
+}
+#patient_send {
+
+}
+#newPatientModal {
+
+}
+#patient_info_form {
+
+}
+.h4 {
+
+}
+.h5 {
+
+}
+.h6 {
+    
+}
+.mb-3 h5 {
+
+}
+.orderlink {
+
+}
+.text-area-wrap {
+    
+}
+
