@@ -230,7 +230,8 @@ class Balance(models.Model):
     """Stores a particular patients balance"""
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient_id')
     totalBalance = models.IntegerField(default=0)
-    amountPaid = models.IntegerField(default=0)
+    amount_Pat_Paid = models.IntegerField(default=0)
+    amount_Ins_Paid = models.IntegerField(default=0)
 
     def __str__(self):
         return f"#{self.patient} - {self.totalBalance} - {self.amountPaid}"
