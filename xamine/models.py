@@ -233,6 +233,13 @@ class Balance(models.Model):
     amount_Pat_Paid = models.IntegerField(default=0)
     amount_Ins_Paid = models.IntegerField(default=0)
 
+    @staticmethod
+    def get_patient_paying(patientid):
+        pay_list = Balance.objects.values_list('totalBalance', 'amount_Pat_Paid', 'amount_Ins_Paid').filter(patient_id=patientid)
+        return pay_list[0] - pay_list[2]
+
+
+
     def __str__(self):
         return f"#{self.patient} - {self.totalBalance} - {self.amountPaid}"
         # ask corey to check this line. Not sure what its supposed to do.
