@@ -211,7 +211,7 @@ def order(request, order_id):
 
     # Set up the variables for our template
     context = {
-        "cur_order": cur_order,
+        'cur_order': cur_order,
     }
 
     # Check for user permission and level order. Add appropriate elements for template rendering.
@@ -219,6 +219,7 @@ def order(request, order_id):
         # Add scheduler form if not yet checked in
         context['schedule_form'] = ScheduleForm(instance=cur_order)
         context['checkin_form'] = TeamSelectionForm(instance=cur_order)
+        context['med_form'] = MedicationOrderForm(instance=cur_order)
     elif cur_order.level_id == 2 and is_in_group(request.user, ['Technicians', 'Radiologists']):
         # Prepare context for template if at checked in step
         if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
@@ -241,6 +242,7 @@ def order(request, order_id):
     # Send thumbnails into context and render HTML
     context['thumbnails'] = get_image_files(cur_order.images.all())
     return render(request, 'order.html', context)
+
 
 
 @login_required
@@ -483,19 +485,20 @@ def get_order_cost(request, order_num):
             return render(request)
 
 
-def med_order(request, order_id, med_order_id):
+def med_order(request, med_order_id):
 
     # Attempt to grab order via order_id from url. 404 if not found.
     try:
-        cur_order = Order.objects.get(pk=order_id)
-        cur_med_order = MedicationOrder.objects.get(pk=med_order_id)
-    except Order.DoesNotExist:
+        cur_order = Order.objects.get(pk=med_order_id)
+    except MedicationOrder.DoesNotExist:
         raise Http404
 
     # Check if it is a post request. If so, build our form with the post data.
     if request.method == 'POST':
-        form = MedicationOrderForm(data=request.POST, instance=cur_med_order)
-
+        form_data = request.POST.copy()
+        form_data['order'] = med_order_id
+        # Set up form with our copied data
+        form = MedicationOrderForm(data=form_data)
 
         # Ensure form is valid. If so, save. If not, show error.
         if form.is_valid():
@@ -507,13 +510,14 @@ def med_order(request, order_id, med_order_id):
                 'headline3': f"{form.errors}"
             }
             return show_message(request, messages)
-
+    else:
+        form = MedicationOrderForm()
     # Set up the variables for our template
     context = {
         'cur_order': cur_order,
-        'cur_med_order': cur_med_order,
-        'form': MedicationOrderForm(instance=cur_med_order),
+        'new_med_form': form,
     }
+    context['order'] = MedicationOrderForm(instance=cur_order)
     return render(request, 'med_order.html', context)
 
 
@@ -528,7 +532,12 @@ def mat_order(request, order_id, mat_order_id):
 
     # Check if it is a post request. If so, build our form with the post data.
     if request.method == 'POST':
-        form = MaterialOrderForm(data=request.POST, instance=cur_mat_order)
+        # Copy form data and assign order to mat_order
+        form_data = request.POST.copy()
+        form_data['order'] = order_id
+
+        # Set up form with our copied data
+        form = MaterialOrderForm(data=form_data, instance=cur_mat_order)
 
         # Ensure form is valid. If so, save. If not, show error.
         if form.is_valid():
@@ -540,11 +549,12 @@ def mat_order(request, order_id, mat_order_id):
                 'headline3': f"{form.errors}"
             }
             return show_message(request, messages)
-
+    else:
+        form = MaterialOrderForm()
     # Set up the variables for our template
     context = {
         'cur_order': cur_order,
         'cur_mat_order': cur_mat_order,
-        'form': MaterialOrderForm(instance=cur_mat_order),
+        'mat_form': MaterialOrderForm(instance=cur_mat_order),
     }
     return render(request, 'material_order.html', context)
