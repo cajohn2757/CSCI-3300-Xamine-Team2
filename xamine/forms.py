@@ -161,9 +161,10 @@ class ColorSchemeForm(forms.ModelForm):
 
     class Meta:
         model = ColorScheme
-        fields = ['mainTheme', 'mainPrimary', 'mainSecondary']
+        fields = ['name', 'mainTheme', 'mainPrimary', 'mainSecondary']
 
         widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'mainTheme': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF']),
             'mainPrimary': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF']),
             'mainSecondary': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF'])
