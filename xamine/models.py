@@ -236,7 +236,7 @@ class Balance(models.Model):
 
     @staticmethod
     def get_patient_paying(patientid):
-        pay_list = Balance.objects.values_list('totalBalance', 'amount_Pat_Paid', 'amount_Ins_Paid').filter(patient_id=patientid)
+        pay_list = Balance.objects.values_list('totalBalance', 'amount_Pat_Paid', 'amount_Ins_Paid').filter(patient_id=patientid)[0]
         return pay_list[0] - pay_list[2]
 
 
