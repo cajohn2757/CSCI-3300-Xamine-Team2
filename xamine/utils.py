@@ -109,3 +109,26 @@ def update_balance(patientid):
 
 def load_init_vals():
     os.system('cmd /c "python manage.py loaddata initial-data.json"')
+
+def finalize_bill(patientid):
+    """ Queries all orders that belong to a patient and calculates how much the Insurance is co-paying for modalities"""
+    check_orders = Order.objects.values_list('id', 'finished_bill', 'modality').filter(patient_id=patientid)
+    update_balance(patientid)
+    modality_list = [0, 0, 0]
+    for x in check_orders:
+        if x[1] == 0:
+            if x[2] == 1:
+                modality_list[0] += 1
+            if x[2] == 2:
+                modality_list[1] += 1
+            if x[2] == 3:
+                modality_list[2] += 1
+            finishedrow = Order.objects.get(pk=x[0])
+            finishedrow.finished_bill = F('finished_bill') + 1
+            finishedrow.save()
+
+    total_balance = Balance.objects.values_list('totalBalance').get(patient_id=patientid)[0]
+    Ins_Paid = total_balance - ((modality_list[0]*100)+(modality_list[1]*75)+(modality_list[2]*200)) #make sure to update the copay amounts so that they can be changed IRL
+    amountInsrow = Balance.objects.get(patient_id=patientid)
+    amountInsrow.amount_Ins_Paid = F('amount_Ins_Paid') + Ins_Paid
+    amountInsrow.save()
