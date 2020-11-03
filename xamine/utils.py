@@ -47,18 +47,18 @@ def get_order_cost(order_num):
     modality_info, medication_info, materials_info = [], [], []
     order_modality = Order.objects.values_list('modality_id').get(pk = order_num)[0]
     try:
-        modality_info = ModalityOption.objects.values_list('name', 'price').get(pk = order_modality) #cost of modality to variable
+        modality_info = ModalityOption.objects.values('name', 'price').get(pk = order_modality) #cost of modality to variable
     except ModalityOption.DoesNotExist:
         pass
     try:
-        medication_info = MedicationOrder.objects.values_list('name', 'quantity', 'billed', 'price').get(order_id = order_num)
+        medication_info = MedicationOrder.objects.values('name', 'quantity', 'billed', 'price').get(order_id = order_num)
     except MedicationOrder.DoesNotExist:
         pass
     try:
-        materials_info = MaterialOrder.objects.values_list('material', 'quantity', 'billed', 'price').get(order_id = order_num)
+        materials_info = MaterialOrder.objects.values('material', 'quantity', 'billed', 'price').get(order_id = order_num)
     except MaterialOrder.DoesNotExist:
         pass
-    totals_info =(modality_info, medication_info, materials_info)
+    totals_info =[modality_info, medication_info, materials_info]
 
 
     # Still need to setup context and reference .html document
@@ -105,6 +105,7 @@ def update_balance(patientid):
     balancerow.totalBalance = F('totalBalance') + running_cost
     balancerow.save()
             # totalinfo.append(info)
+    return
 
 
 def load_init_vals():
@@ -132,3 +133,12 @@ def finalize_bill(patientid):
     amountInsrow = Balance.objects.get(patient_id=patientid)
     amountInsrow.amount_Ins_Paid = F('amount_Ins_Paid') + Ins_Paid
     amountInsrow.save()
+def get_invoice(patientid):
+    check_orders = Order.objects.values_list('id').filter(patient_id=patientid)[0]
+    invoice = dict()
+    for x in check_orders:
+        info = get_order_cost(x)
+        info[1].pop('billed')
+        info[2].pop('billed')
+        invoice[x] = info
+    return invoice
