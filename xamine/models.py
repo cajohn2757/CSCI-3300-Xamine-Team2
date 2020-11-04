@@ -127,6 +127,7 @@ class Order(models.Model):
     imaging_needed = models.CharField(max_length=128)
     modality = models.ForeignKey(ModalityOption, on_delete=models.DO_NOTHING)
     modality_billed = models.IntegerField(default=0)
+    finished_bill = models.IntegerField(default= 0)
     notes = models.TextField(null=True, blank=True, max_length=1000)
 
     # Radiology information
@@ -230,7 +231,15 @@ class Balance(models.Model):
     """Stores a particular patients balance"""
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient_id')
     totalBalance = models.IntegerField(default=0)
-    amountPaid = models.IntegerField(default=0)
+    amount_Pat_Paid = models.IntegerField(default=0)
+    amount_Ins_Paid = models.IntegerField(default=0)
+
+    @staticmethod
+    def get_patient_paying(patientid):
+        pay_list = Balance.objects.values_list('totalBalance', 'amount_Pat_Paid', 'amount_Ins_Paid').filter(patient_id=patientid)[0]
+        return pay_list[0] - pay_list[2]
+
+
 
     def __str__(self):
         return f"#{self.patient} - {self.totalBalance} - {self.amountPaid}"

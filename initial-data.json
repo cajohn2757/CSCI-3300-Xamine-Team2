@@ -18,12 +18,20 @@
     }
   },
   {
-  "model": "xamine.ModalityOption",
+    "model": "xamine.ModalityOption",
     "pk": 3,
     "fields":
     {
       "name": "CAT Scan",
       "price": 5000
+    }
+  },
+  {
+    "model": "xamine.Insurance",
+    "pk": 1,
+    "fields":
+    {
+      "name": "Red Star"
     }
   }
 ]

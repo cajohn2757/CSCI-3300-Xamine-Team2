@@ -9,11 +9,124 @@
     {{ patient_lookup.media.css }}
 {% endblock %}
 
+
 {% block main %}
+
+<style>
+    * {box-sizing: border-box}
+
+/* Style the tab */
+.tab {
+  float: left;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 10%;
+  height: 800px;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 22px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #ccc;
+  width: 90%;
+  border-left: none;
+  height: 800px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+
+thead th {
+  background-color: bg-info;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #cecbcb;
+}
+
+/*
+tbody td {
+  background-color: #EEEEEE;
+}
+*/
+tr td:first-child,
+tr th:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+tr td:last-child,
+tr th:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+</style>
+
+<script>
+    function openSection(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the link that opened the tab
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+</script>
+
+
+<div class="tab">
+    <button class="tablinks" onclick="openSection(event, 'physician_section')">Physician</button>
+    <button class="tablinks" onclick="openSection(event, 'reception_section')">Receptionist</button>
+    <button class="tablinks" onclick="openSection(event, 'imaging_section')">Technician</button>
+    <button class="tablinks" onclick="openSection(event, 'analysis_section')">Radiologists</button>
+  </div>
+
 
     {% if request.user|has_group:"Physicians" or request.user|has_group:"Administrators" %}
         <!-- physician section -->
-        <div id="physician_section">
+        <div id="physician_section" class="tabcontent" style="display: none;">
             <form action="{% url 'patient_lookup' %}" method="POST">
                 {% csrf_token %}
                 <div class="modal fade" id="new_order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -45,16 +158,16 @@
             <div class="container mt-1">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <button type="button" data-toggle="modal" data-target="#new_order" class="btn btn-primary btn-sm">
+                        <button type="button" data-toggle="modal" data-target="#new_order" class="btn btn-info btn-sm">
                             Create New Order
                         </button>
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-12 col-md-6 text-center">
+                    <div class="col-12 col-md-8 text-center">
                         <div class="mb-3 h5">Active Orders</div>
-                        <table class="table table-sm">
-                            <thead>
+                        <table class="table table-sm table-striped">
+                           <thead class="bg-info text-white">
                             <tr>
                                 <th>Order #</th>
                                 <th>Patient</th>
@@ -78,10 +191,10 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-12 col-md-6 text-center">
+                    <div class="col-12 col-md-4 text-center">
                         <div class="mb-3 h5">Completed Orders</div>
-                        <table class="table table-sm">
-                            <thead>
+                        <table class="table table-sm table-striped">
+                            <thead class="bg-info text-white">
                             <tr>
                                 <th>Order #</th>
                                 <th>Patient</th>
@@ -96,7 +209,7 @@
                                     <td>{{ order.last_edit|date:'m/d/Y' }}</td>
                                 </tr>
                             {% empty %}
-                                <tr>
+                                <tr class="bg-primary text-white">
                                     <td colspan="3" class="text-center text-muted">
                                         No orders
                                     </td>
@@ -114,67 +227,74 @@
 
     {% if request.user|has_group:"Receptionists" or request.user|has_group:"Administrators" %}
         <!-- receptionist section -->
-        <div class="container mt-1" id="reception_section">
-            <div class="row mt-3">
-                <div class="col-12 col-md-6 text-center">
-                    <div class="h5">
-                        Today's Appointments
+        <div class="tabcontent" id="reception_section"  style="display: none;">
+            <div class="container mt-1">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        
                     </div>
-                    <div class="text-muted small mb-3">
-                        {% now "DATE_FORMAT" %}
-                    </div>
-                    <table class="table table-sm">
-                        <thead>
-                        <tr>
-                            <th>Order #</th>
-                            <th>Patient</th>
-                            <th>Time</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for order in todays_orders %}
-                            <tr>
-                                <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.id }}</a></td>
-                                <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.patient.full_name }}</a></td>
-                                <td>{{ order.appointment|date:'P' }}</td>
-                            </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="3" class="text-center text-muted">
-                                    No orders
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
                 </div>
-                <div class="col-12 col-md-6 text-center">
-                    <div class="h5">Unscheduled Appointments</div>
-                    <div class="text-muted small mb-3">Click to Schedule</div>
-                    <table class="table table-sm">
-                        <thead>
-                        <tr>
-                            <th>Order #</th>
-                            <th>Patient</th>
-                            <th>Drafted</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for order in unsched_orders %}
+                <div class="row mt-3">
+                    <div class="col-12 col-md-8 text-center">
+                        <div class="h5">
+                            Today's Appointments
+                        </div>
+                        <div class="text-muted small mb-3">
+                            {% now "DATE_FORMAT" %}
+                        </div>
+                        <table class="table table-sm table-striped">
+                            <thead class="bg-info text-white">
                             <tr>
-                                <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.id }}</a></td>
-                                <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.patient.full_name }}</a></td>
-                                <td>{{ order.added_on|date:'m/d/Y' }}</td>
+                                <th>Time</th>
+                                <th>Patient</th>
+                                <th>Order No.</th>
                             </tr>
-                        {% empty %}
+                            </thead>
+                            <tbody>
+                            {% for order in todays_orders %}
+                                <tr>
+                                    <td>{{ order.appointment|date:'P' }}</td>
+                                    <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.patient.full_name }}</a></td>
+                                    <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.id }}</a></td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        No orders
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12 col-md-4 text-center">
+                        <div class="h5">Unscheduled Appointments</div>
+                        <div class="text-muted small mb-3">Click to Schedule</div>
+                        <table class="table table-sm">
+                            <thead class="bg-info text-white">
                             <tr>
-                                <td colspan="3" class="text-center text-muted">
-                                    No orders
-                                </td>
+                                <th>Order #</th>
+                                <th>Patient</th>
+                                <th>Drafted</th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {% for order in unsched_orders %}
+                                <tr>
+                                    <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.id }}</a></td>
+                                    <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.patient.full_name }}</a></td>
+                                    <td>{{ order.added_on|date:'m/d/Y' }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        No orders
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -183,30 +303,30 @@
 
     {% if request.user|has_group:"Technicians" or request.user|has_group:"Administrators" %}
         <!-- imaging/prep section -->
-        <div class="container mt-1" id="imaging_section">
+        <div class="tabcontent" id="imaging_section"  style="display: none;">
             <div class="row mt-3">
                 <div class="col-12 text-center">
                     <div class="mb-3 h5">Checked In Patients</div>
-                    <table class="table table-sm">
-                        <thead>
+                    <table class="table table-sm table-striped">
+                        <thead class="bg-info text-white">
                         <tr>
+                            <th class="d-none d-md-table-cell">Appt Time</th>
                             <th>Order #</th>
                             <th>Patient</th>
                             <th class="d-none d-md-table-cell">Visit Reason</th>
                             <th class="d-none d-md-table-cell">Imaging</th>
                             <th>Modality</th>
-                            <th class="d-none d-md-table-cell">Appt</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for order in checked_in_orders %}
                             <tr>
+                                <td class="d-none d-md-table-cell">{{ order.appointment }}</td>
                                 <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.id }}</a></td>
                                 <td><a class="orderlink" href="{% url 'order' order_id=order.id %}">{{ order.patient.full_name }}</a></td>
                                 <td class="d-none d-md-table-cell">{{ order.visit_reason }}</td>
                                 <td class="d-none d-md-table-cell">{{ order.imaging_needed }}</td>
                                 <td>{{ order.modality }}</td>
-                                <td class="d-none d-md-table-cell">{{ order.appointment }}</td>
                             </tr>
                         {% empty %}
                             <tr>
@@ -226,12 +346,12 @@
 
     {% if request.user|has_group:"Radiologists" or request.user|has_group:"Administrators" %}
         <!-- analysis section -->
-        <div class="container mt-1" id="analysis_section">
+        <div class="tabcontent" id="analysis_section"  style="display: none;">
             <div class="row mt-3">
                 <div class="col-12 text-center">
                     <div class="mb-3 h5">Awaiting Analysis</div>
-                    <table class="table table-sm">
-                        <thead>
+                    <table class="table table-sm table-striped">
+                        <thead class="bg-info text-white">
                         <tr>
                             <th>Order #</th>
                             <th>Patient</th>
@@ -285,3 +405,5 @@
         });
     </script>
 {% endblock %}
+
+
