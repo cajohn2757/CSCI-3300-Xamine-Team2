@@ -11,8 +11,9 @@ urlpatterns = [
     path('order/<int:order_id>/send', apiviews.patient_email, name='patient_view'),  # Send patient view email
     path('order/<int:order_id>/schedule', views.schedule_order, name='schedule_time'),  # Schedule our order
     path('order/<int:order_id>/save', views.save_order, name='save_order'),  # Save radiology report without finalizing.
-    path('med-order/<int:med_order_id>/', views.med_order, name='med_order'),  # Internal viewing and submitting of medication orders
-    path('order/<int:order_id>/mat-order/<int:mat_order_id>/', views.mat_order, name='mat_order'),  # Internal viewing and submitting of medication orders
+    path('order/<int:order_id>/med-order', views.med_order, name='med_order'),  # Internal viewing and submitting of medication orders
+    path('order/<int:order_id>/mat-order/<int:mat_order_id>/', views.mat_order, name='mat_order'),  # Internal viewing and submitting of material orders
+    path('order/<int:order_id>/new-med-order', views.new_med_order, name='new_med_order'),  # Start new med order
 
     path('patient/<int:pat_id>/', views.patient, name='patient'),  # View patient info
     path('patient/', views.patient_lookup, name='patient_lookup'),  # lookup patients by DOB

@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 from xamine.forms import ImageUploadForm
-from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm
+from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm, NewMedicationOrderForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
 from xamine.utils import is_in_group, get_image_files
 from xamine.tasks import send_notification
@@ -207,7 +207,7 @@ def order(request, order_id):
         cur_order.save()
 
         # Send an email notification to the correct user(s)
-        send_notification.now(order_id)
+        #send_notification.now(order_id)
 
     # Set up the variables for our template
     context = {
@@ -219,7 +219,6 @@ def order(request, order_id):
         # Add scheduler form if not yet checked in
         context['schedule_form'] = ScheduleForm(instance=cur_order)
         context['checkin_form'] = TeamSelectionForm(instance=cur_order)
-        context['med_form'] = MedicationOrderForm(instance=cur_order)
     elif cur_order.level_id == 2 and is_in_group(request.user, ['Technicians', 'Radiologists']):
         # Prepare context for template if at checked in step
         if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
@@ -228,6 +227,7 @@ def order(request, order_id):
         # Prepare context for template if at imaging complete step
         if request.user in cur_order.team.radiologists.all():
             context['analysis_form'] = AnalysisForm(instance=cur_order)
+            context['med_form'] = MedicationOrderForm(instance=cur_order)
     elif cur_order.level_id == 4:
         # Prepare context for template if at analysis complete step
         pass
@@ -485,40 +485,73 @@ def get_order_cost(request, order_num):
             return render(request)
 
 
-def med_order(request, med_order_id):
+@login_required
+def med_order(request, order_id=None):
 
     # Attempt to grab order via order_id from url. 404 if not found.
     try:
-        cur_order = Order.objects.get(pk=med_order_id)
+        cur_order = Order.objects.get(pk=order_id)
+        cur_med_order = MedicationOrder.objects.get(pk=order_id)
     except MedicationOrder.DoesNotExist:
         raise Http404
 
-    # Check if it is a post request. If so, build our form with the post data.
+    # Check if we have a POST request
     if request.method == 'POST':
-        form_data = request.POST.copy()
-        form_data['order'] = med_order_id
-        # Set up form with our copied data
-        form = MedicationOrderForm(data=form_data)
 
-        # Ensure form is valid. If so, save. If not, show error.
+        # Assign POST data to selection form, check if it's valid, and save if so
+        form = MedicationOrderForm(data=request.POST, instance=cur_med_order)
         if form.is_valid():
             form.save()
         else:
+           # Show errors
             messages = {
                 'headline1': 'Invalid Form',
                 'headline2': 'Please try again.',
                 'headline3': f"{form.errors}"
             }
             return show_message(request, messages)
-    else:
-        form = MedicationOrderForm()
+
+        # If we've made it to there, that means we've successfully submitted the order.
+        # Therefore, we'll re-grab it from the DB and increment it's level by one.
+        cur_order.refresh_from_db()
+
+
     # Set up the variables for our template
     context = {
         'cur_order': cur_order,
-        'new_med_form': form,
+        'cur_med_order': cur_med_order,
     }
-    context['order'] = MedicationOrderForm(instance=cur_order)
+
     return render(request, 'med_order.html', context)
+
+
+@login_required()
+def new_med_order(request, order_id):
+    """ Handles creation of a new medication order """
+
+    # if not post request, redirect to 404
+    if not request.method == 'POST':
+        raise Http404
+
+    cur_order = Order.objects.get(pk=order_id)
+    # set up new patient request form with POST data
+    new_form = MedicationOrderForm(data=request.POST)
+
+    # Check if form is valid. If so, assign doctor and save, the redir to a new order. Otherwise, show error.
+    if new_form.is_valid():
+        new_medication_order = new_form.save()
+        new_medication_order.save()
+
+        return redirect('order', order_id=new_medication_order.pk)
+
+    else:
+        context = {
+            'new_medication_form': new_form,
+            'show_modal': True,
+            'order': cur_order,
+        }
+        return render(request, 'new_med_order.html', context)
+
 
 
 def mat_order(request, order_id, mat_order_id):

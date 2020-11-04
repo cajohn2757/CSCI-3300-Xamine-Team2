@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+
+{% block header %}
+    {% load group_auth %}
+    {% load phone_number %}
+    <style>
+        .orderlink { 
+            color: black;
+             }
+        label{
+            font-weight: bold;
+        }
+    </style>
+
+{% endblock %}
+
+{% block main %}
+<form method="POST" action="{% url 'new_med_order' order_id=order.id %}">
+    {% csrf_token %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class='display-4 text-center'>
+                New Medication Order
+            </div>
+        </div>
+        <div class="col-12 mt-4">
+            <div class='h4 text-center'>
+                Patient Order Info
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col-md-3 col-12 mt-2">
+                    <div class='font-weight-bold'>
+                        Patient Name:
+                    </div>
+                    {{ order.patient.full_name }}
+                </div>
+                <div class="col-md-3 col-12 mt-2">
+                    <div class='font-weight-bold'>
+                        Patient Order ID:
+                    </div>
+                    {{ order.id }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row collapse show med-order">
+        <div class="col-12 mt-4">
+            <div class='h4 text-center'>
+                Medication Order Info
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_name">
+                Medication:
+            </label>
+            {{ new_medication_form.name }}
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_quantity">
+                Quantity:
+            </label>
+            {{ new_medication_form.quantity }}
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_price">
+                Price:
+            </label>
+            {{ new_medication_form.price }}
+        </div>
+        <div class="col mt-3 ">
+            <button type="submit" class="btn btn-primary">Save Medication Info</button>
+            <a class="btn btn-secondary" data-toggle="collapse" href=".med-order" onclick="resetForm()">Cancel</a>
+        </div>
+    </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}
+
+{% block afterscript %}
+<script>
+    function resetForm() {
+            document.getElementById("med_info_form").reset();
+        }
+
+</script>
+
+{% endblock %}

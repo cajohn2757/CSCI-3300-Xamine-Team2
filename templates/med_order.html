@@ -22,8 +22,7 @@
 {% endblock %}
 
 {% block main %}
-<form method="POST">
-{% csrf_token %}
+
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -43,21 +42,21 @@
                 <div class="invisible">
                     <div class="col-md-4 col-12 mt-1">
                         <label>Order ID:</label>
-                        {{ new_med_order.id }}
+                        {{ cur_order.id }}
                     </div>
                 </div>
                 <div class="row collapse show med-order">
                     <div class="col-md-4 col-12 mt-1">
                         <label>Medication:</label>
-                        {{ new_med_form.name }}
+                        {{ cur_order.name }}
                     </div>
                     <div class="col-md-4 col-12 mt-1">
                         <label>Quantity:</label>
-                        {{ new_med_form.quantity }}
+                        {{ cur_order.quantity }}
                     </div>
                     <div class="col-md-4 col-12 mt-1">
                         <label>Price:</label><label2> $</label2>
-                        {{ new_med_order.price }}
+                        {{ cur_order.price }}
                     </div>
                     <div class="container">
                         <hr class="beautiful-line">
@@ -94,7 +93,6 @@
             </div>
         </div>
     </div>
-</form>
 {% endblock %}
 
 {% block afterscript %}
