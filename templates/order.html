@@ -134,6 +134,11 @@
                                 Medication Order Form
                             </a>
                         {% endif %}
+                        {% if cur_order.level_id == 4 %}
+                            <a href="{% url 'med_order' order_id=cur_order.id %}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Link to Medication Order">
+                            View Medication Order
+                            </a>
+                        {% endif %}
                     </div>
                     <hr>
                 </div>
@@ -208,7 +213,7 @@
     </div>
     <!-- end physician section -->
 
-    {% if cur_order.level_id < 4 %}
+    {% if cur_order.level_id < 5 %}
         <!-- edit order info section -->
         <div class="collapse" id="edit_order_info">
             <form id="edit_order_form">
@@ -252,7 +257,7 @@
             <div class="row">
                 <div class="col-12">
                     <span class="h4">Order Information</span>
-                    {% if cur_order.level_id < 4 and False %}
+                    {% if cur_order.level_id < 5 and False %}
                         <a href="#" onclick="editOrder()" class="text-muted small ml-2" data-toggle="tooltip" data-placement="top" title="Link to Order Info">
                             Edit
                         </a>
@@ -283,7 +288,7 @@
 
     {% if cur_order.level_id > 1 %}
         <!-- imaging section -->
-        {% if cur_order.level_id < 4 and image_form %}
+        {% if cur_order.level_id < 5 and image_form %}
             <form method="POST" action="{% url 'submit_image' order_id=cur_order.id %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="modal fade" id="imageFormModal" tabindex="-1" role="dialog">
@@ -337,7 +342,7 @@
                                 <th scope="col" class="d-none d-md-table-cell">Timestamp</th>
                                 <th scope="col" class="d-none d-md-table-cell">User</th>
                                 <th scope="col">
-                                    {% if cur_order.level_id < 4 and image_form %}
+                                    {% if cur_order.level_id < 5 and image_form %}
                                         <button type="button" class="btn btn-sm btn-link" id="imageFormModalBtn" data-toggle="modal" data-target="#imageFormModal">
                                             <i class="fas fa-plus"></i>
                                         </button>
@@ -357,7 +362,7 @@
                                     <td class="d-none d-md-table-cell">{{ image.added_on }}</td>
                                     <td class="d-none d-md-table-cell">{{ image.user }}</td>
                                     <td>
-                                        {% if cur_order.level_id < 4 and image_form %}
+                                        {% if cur_order.level_id < 5 and image_form %}
                                             <a class="orderlink" href="{% url 'remove_image' img_id=image.pk %}">
                                                 <i class="fas fa-trash"></i>
                                             </a>
@@ -417,7 +422,7 @@
         <!-- end imaging section -->
     {% endif %}
 
-    {% if cur_order.level_id > 2 %}
+    {% if cur_order.level_id > 3 %}
         <!-- analysis section -->
         <div class="collapse show" id="order_info">
             <div class="container mt-5">
@@ -447,7 +452,7 @@
                         {% endif %}
                     </div>
                 </div>
-                {% if cur_order.level_id > 3 and request.user|has_group:'Physicians' and request.user == cur_order.patient.doctor %}
+                {% if cur_order.level_id > 4 and request.user|has_group:'Physicians' and request.user == cur_order.patient.doctor %}
                     <div class="row mt-3">
                         <div class="col-12">
                             <button id="patient_send" type="button" onclick="sendPatientEmail()" class="btn btn-outline-primary">
@@ -462,7 +467,7 @@
         
     {% endif %}
 
-    {% if cur_order.level_id < 5 %}
+    {% if cur_order.level_id < 6 %}
         <!-- payment section -->
         <div class="collapse show" id="order_info">
             <div class="container mt-5">
@@ -517,7 +522,7 @@
             document.getElementById('edit_order_form').reset()
         }
 
-        {% if cur_order.level_id >= 4 and request.user|has_group:"Physicians" %}
+        {% if cur_order.level_id >= 5 and request.user|has_group:"Physicians" %}
             function sendPatientEmail () {
                 fetch("{% url 'patient_view' order_id=cur_order.id %}")
                     .then(res => res.json())

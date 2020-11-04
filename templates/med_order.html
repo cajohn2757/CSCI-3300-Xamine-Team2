@@ -39,47 +39,40 @@
         </div>
         <div class="row">
             <div class="col-md-12 col-12">
-                <div class="invisible">
-                    <div class="col-md-4 col-12 mt-1">
-                        <label>Order ID:</label>
-                        {{ cur_order.id }}
-                    </div>
-                </div>
                 <div class="row collapse show med-order">
                     <div class="col-md-4 col-12 mt-1">
                         <label>Medication:</label>
-                        {{ cur_order.name }}
+                        {{ medication_info.name }}
                     </div>
                     <div class="col-md-4 col-12 mt-1">
                         <label>Quantity:</label>
-                        {{ cur_order.quantity }}
+                        {{ medication_info.quantity }}
                     </div>
                     <div class="col-md-4 col-12 mt-1">
                         <label>Price:</label><label2> $</label2>
-                        {{ cur_order.price }}
+                        {{ medication_info.price }}
                     </div>
                     <div class="container">
                         <hr class="beautiful-line">
                     </div>
+                    <a href="{% url 'order' order_id=cur_order.id %}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Link to Medication Order">
+                        Back to Order
+                    </a>
                 </div>
                 <form id="medication_order_form" method="POST">
                     {% csrf_token %}
-                    <div class="invisible">
-                            <label>Order ID:</label>
-                            {{ form.order|default_if_none:'new_med_form.id' }}
-                    </div>
                     <div class="row collapse med-order">
                         <div class="col-md-4 col-12 mt-1">
                             <label>Medication:</label><br>
-                            {{ form.name }}
+                            {{ med_form.name }}
                         </div>
                         <div class="col-md-4 col-12 mt-1">
                             <label>Quantity:</label><br>
-                            {{ form.quantity }}
+                            {{ med_form.quantity }}
                         </div>
                         <div class="col-md-4 col-12 mt-1">
                             <label>Price:</label><br>
-                            {{ form.price }}
+                            {{ med_form.price }}
                         </div>
                         <div class="container">
                             <hr class="beautiful-line">

@@ -27,8 +27,8 @@ def index(request):
     # Check if administrator or physician
     if see_all or is_in_group(request.user, "Physicians"):
         # Grab active orders and completed orders from database
-        active_orders = Order.objects.filter(level_id__lt=4)
-        complete_orders = Order.objects.filter(level_id=4)
+        active_orders = Order.objects.filter(level_id__lt=5)
+        complete_orders = Order.objects.filter(level_id=5)
 
         # If we are not an administrator, limit active and complete orders to
         # the logged in users' patients.
@@ -61,7 +61,7 @@ def index(request):
 
     if see_all or is_in_group(request.user, "Radiologists"):
         # Pass into context all imaging complete orders for teams where logged in user is a radiologist.
-        context['radiologist_orders'] = Order.objects.filter(level_id=3, team__radiologists=request.user)
+        context['radiologist_orders'] = Order.objects.filter(level_id=4, team__radiologists=request.user)
 
     # Render the dashoboard with any context we've passed in.
     return render(request, 'index.html', context)
@@ -80,7 +80,7 @@ def save_order(request, order_id):
     # Ensure request method is POST
     if request.method == 'POST':
         # Check if Order is at radiologist level and request user is a radiologist and is on the order's team.
-        if cur_order.level_id == 3 and is_in_group(request.user, ['Radiologists']):
+        if cur_order.level_id == 4 and is_in_group(request.user, ['Radiologists']):
             if request.user in cur_order.team.radiologists.all():
                 # Set up form with our data and save if valid
                 form = AnalysisForm(data=request.POST, instance=cur_order)
@@ -159,8 +159,21 @@ def order(request, order_id):
                 }
                 return show_message(request, messages)
 
+        elif cur_order.level_id == 3 and is_in_group(request.user, ['Technicians', 'Radiologists','Physicians']):
+            if request.user in cur_order.team.technicians.all() | cur_order.team.technicians.all():
+                # Save order with med order info
+                cur_order.save()
+            else:
+                # Show auth error
+                messages = {
+                    'headline1': 'Not Authorized',
+                    'headline2': '',
+                    'headline3': '',
+                }
+                return show_message(request, messages)
+
         # Check if level and permissions for the logged in user are both radiology
-        elif cur_order.level_id == 3 and is_in_group(request.user, ['Radiologists']):
+        elif cur_order.level_id == 4 and is_in_group(request.user, ['Radiologists']):
             if request.user in cur_order.team.radiologists.all():
                 # Set up data in our form and check validity of data.
                 form = AnalysisForm(data=request.POST, instance=cur_order)
@@ -223,15 +236,18 @@ def order(request, order_id):
         # Prepare context for template if at checked in step
         if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
             context['image_form'] = ImageUploadForm(instance=cur_order)
-    elif cur_order.level_id == 3 and is_in_group(request.user, ['Radiologists']):
+    elif cur_order.level_id == 3 and is_in_group(request.user, ['Technicians', 'Radiologists','Physicians']):
         # Prepare context for template if at imaging complete step
+        if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
+            context['med_form'] = MedicationOrderForm(instance=cur_order)
+    elif cur_order.level_id == 4 and is_in_group(request.user, ['Radiologists']):
+        # Prepare context for template if at medication and material order step
         if request.user in cur_order.team.radiologists.all():
             context['analysis_form'] = AnalysisForm(instance=cur_order)
-            context['med_form'] = MedicationOrderForm(instance=cur_order)
-    elif cur_order.level_id == 4:
+    elif cur_order.level_id == 5:
         # Prepare context for template if at analysis complete step
         pass
-    elif cur_order.level_id == 5:
+    elif cur_order.level_id == 6:
         # Prepare context for template if archived
         pass
 
@@ -271,8 +287,8 @@ def patient(request, pat_id=None):
     context = {
         'patient_info': patient_rec,
         'form': PatientInfoForm(instance=patient_rec),
-        'active_orders': patient_rec.orders.filter(level_id__lt=4),
-        'complete_orders': patient_rec.orders.filter(level_id__gte=4),
+        'active_orders': patient_rec.orders.filter(level_id__lt=5),
+        'complete_orders': patient_rec.orders.filter(level_id__gte=5),
     }
     return render(request, 'patient.html', context)
 
@@ -486,24 +502,21 @@ def get_order_cost(request, order_num):
 
 
 @login_required
-def med_order(request, order_id=None):
+def med_order(request, med_order_id=None, order_id=None):
+    """ Displays the patient info and orders """
 
-    # Attempt to grab order via order_id from url. 404 if not found.
-    try:
-        cur_order = Order.objects.get(pk=order_id)
-        cur_med_order = MedicationOrder.objects.get(pk=order_id)
-    except MedicationOrder.DoesNotExist:
-        raise Http404
+    # Grab medication order from the database
+    cur_order = Order.objects.get(pk=order_id)
+    medication_order_info = MedicationOrder.objects.get(pk=order_id)
 
-    # Check if we have a POST request
+    # Check if it is a post request. If so, build our form with the post data.
     if request.method == 'POST':
+        form = MedicationOrderForm(data=request.POST, instance=medication_order_info)
 
-        # Assign POST data to selection form, check if it's valid, and save if so
-        form = MedicationOrderForm(data=request.POST, instance=cur_med_order)
+        # Ensure form is valid. If so, save. If not, show error.
         if form.is_valid():
             form.save()
         else:
-           # Show errors
             messages = {
                 'headline1': 'Invalid Form',
                 'headline2': 'Please try again.',
@@ -511,17 +524,12 @@ def med_order(request, order_id=None):
             }
             return show_message(request, messages)
 
-        # If we've made it to there, that means we've successfully submitted the order.
-        # Therefore, we'll re-grab it from the DB and increment it's level by one.
-        cur_order.refresh_from_db()
-
-
-    # Set up the variables for our template
+    # Set up variables for our template and render it
     context = {
+        'medication_info': medication_order_info,
         'cur_order': cur_order,
-        'cur_med_order': cur_med_order,
+        'med_form': MedicationOrderForm(instance=medication_order_info),
     }
-
     return render(request, 'med_order.html', context)
 
 
@@ -552,7 +560,6 @@ def new_med_order(request, order_id):
             'order': cur_order,
         }
         return render(request, 'new_med_order.html', context)
-
 
 
 def mat_order(request, order_id, mat_order_id):
@@ -592,3 +599,32 @@ def mat_order(request, order_id, mat_order_id):
         'mat_form': MaterialOrderForm(instance=cur_mat_order),
     }
     return render(request, 'material_order.html', context)
+
+
+@login_required()
+def new_mat_order(request, order_id):
+    """ Handles creation of a new material order """
+
+    # if not post request, redirect to 404
+    if not request.method == 'POST':
+        raise Http404
+
+    cur_order = Order.objects.get(pk=order_id)
+    # set up new patient request form with POST data
+    new_form = MedicationOrderForm(data=request.POST)
+
+    # Check if form is valid. If so, assign doctor and save, the redir to a new order. Otherwise, show error.
+    if new_form.is_valid():
+        new_medication_order = new_form.save()
+        new_medication_order.order = cur_order
+        new_medication_order.save()
+
+        return redirect('order', order_id=cur_order.pk)
+
+    else:
+        context = {
+            'new_medication_form': new_form,
+            'show_modal': True,
+            'order': cur_order,
+        }
+        return render(request, 'new_med_order.html', context)

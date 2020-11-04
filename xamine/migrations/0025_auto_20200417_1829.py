@@ -8,6 +8,7 @@ def add_data_list(apps, schema_editor):
         'Referral Placed',
         'Checked In',
         'Imaging Complete',
+        'Material and Medication Orders',
         'Analysis Complete',
         'Archived'
     ]

@@ -12,8 +12,9 @@ urlpatterns = [
     path('order/<int:order_id>/schedule', views.schedule_order, name='schedule_time'),  # Schedule our order
     path('order/<int:order_id>/save', views.save_order, name='save_order'),  # Save radiology report without finalizing.
     path('order/<int:order_id>/med-order', views.med_order, name='med_order'),  # Internal viewing and submitting of medication orders
-    path('order/<int:order_id>/mat-order/<int:mat_order_id>/', views.mat_order, name='mat_order'),  # Internal viewing and submitting of material orders
-    path('order/<int:order_id>/new-med-order', views.new_med_order, name='new_med_order'),  # Start new med order
+    path('order/<int:order_id>/mat-order', views.mat_order, name='mat_order'),  # Internal viewing and submitting of material orders
+    path('order/<int:order_id>/new-med-order', views.new_med_order, name='new_med_order'),  # Start new medication order
+    path('order/<int:order_id>/new-mat-order', views.new_mat_order, name='new_mat_order'),  # Start new material order
 
     path('patient/<int:pat_id>/', views.patient, name='patient'),  # View patient info
     path('patient/', views.patient_lookup, name='patient_lookup'),  # lookup patients by DOB
