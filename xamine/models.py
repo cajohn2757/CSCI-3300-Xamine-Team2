@@ -197,7 +197,7 @@ class Insurance(models.Model):
 
 class MedicationOrder(models.Model):
     """ New Medication Order """
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name= 'med_order', null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name= 'med_order', null=True, blank=True)
     name = models.CharField(max_length=256)
     quantity = models.IntegerField()  # in mg
     price = models.IntegerField(null=True, blank=True)  # in USD

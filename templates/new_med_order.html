@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block main %}
-<form method="POST" action="{% url 'new_med_order' order_id=order.id %}">
+<form method="POST">
     {% csrf_token %}
 <div class="container">
     <div class="row">

@@ -540,9 +540,10 @@ def new_med_order(request, order_id):
     # Check if form is valid. If so, assign doctor and save, the redir to a new order. Otherwise, show error.
     if new_form.is_valid():
         new_medication_order = new_form.save()
+        new_medication_order.order = cur_order
         new_medication_order.save()
 
-        return redirect('order', order_id=new_medication_order.pk)
+        return redirect('order', order_id=cur_order.pk)
 
     else:
         context = {
