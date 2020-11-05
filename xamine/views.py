@@ -27,8 +27,8 @@ def index(request):
     # Check if administrator or physician
     if see_all or is_in_group(request.user, "Physicians"):
         # Grab active orders and completed orders from database
-        active_orders = Order.objects.filter(level_id__lt=6)
-        complete_orders = Order.objects.filter(level_id=6)
+        active_orders = Order.objects.filter(level_id__lt=5)
+        complete_orders = Order.objects.filter(level_id=5)
 
         # If we are not an administrator, limit active and complete orders to
         # the logged in users' patients.
@@ -61,7 +61,7 @@ def index(request):
 
     if see_all or is_in_group(request.user, "Radiologists"):
         # Pass into context all imaging complete orders for teams where logged in user is a radiologist.
-        context['radiologist_orders'] = Order.objects.filter(level_id=5, team__radiologists=request.user)
+        context['radiologist_orders'] = Order.objects.filter(level_id=4, team__radiologists=request.user)
 
     # Render the dashoboard with any context we've passed in.
     return render(request, 'index.html', context)
@@ -80,7 +80,7 @@ def save_order(request, order_id):
     # Ensure request method is POST
     if request.method == 'POST':
         # Check if Order is at radiologist level and request user is a radiologist and is on the order's team.
-        if cur_order.level_id == 5 and is_in_group(request.user, ['Radiologists']):
+        if cur_order.level_id == 4 and is_in_group(request.user, ['Radiologists']):
             if request.user in cur_order.team.radiologists.all():
                 # Set up form with our data and save if valid
                 form = AnalysisForm(data=request.POST, instance=cur_order)
@@ -172,21 +172,8 @@ def order(request, order_id):
                 }
                 return show_message(request, messages)
 
-        elif cur_order.level_id == 4 and is_in_group(request.user, ['Technicians', 'Radiologists','Physicians']):
-            if request.user in cur_order.team.technicians.all() | cur_order.team.technicians.all():
-                # Save order with med order info
-                cur_order.save()
-            else:
-                # Show auth error
-                messages = {
-                    'headline1': 'Not Authorized',
-                    'headline2': '',
-                    'headline3': '',
-                }
-                return show_message(request, messages)
-
         # Check if level and permissions for the logged in user are both radiology
-        elif cur_order.level_id == 5 and is_in_group(request.user, ['Radiologists']):
+        elif cur_order.level_id == 4 and is_in_group(request.user, ['Radiologists']):
             if request.user in cur_order.team.radiologists.all():
                 # Set up data in our form and check validity of data.
                 form = AnalysisForm(data=request.POST, instance=cur_order)
@@ -253,18 +240,14 @@ def order(request, order_id):
         # Prepare context for template if at imaging complete step
         if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
             context['med_form'] = MedicationOrderForm(instance=cur_order)
-    elif cur_order.level_id == 4 and is_in_group(request.user, ['Technicians', 'Radiologists','Physicians']):
-        # Prepare context for template if at imaging complete step
-        if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
-            context['mat_form'] = MaterialOrderForm(instance=cur_order)
-    elif cur_order.level_id == 5 and is_in_group(request.user, ['Radiologists']):
+    elif cur_order.level_id == 4 and is_in_group(request.user, ['Radiologists']):
         # Prepare context for template if at medication and material order step
         if request.user in cur_order.team.radiologists.all():
             context['analysis_form'] = AnalysisForm(instance=cur_order)
-    elif cur_order.level_id == 6:
+    elif cur_order.level_id == 5:
         # Prepare context for template if at analysis complete step
         pass
-    elif cur_order.level_id == 7:
+    elif cur_order.level_id == 6:
         # Prepare context for template if archived
         pass
 
@@ -304,8 +287,8 @@ def patient(request, pat_id=None):
     context = {
         'patient_info': patient_rec,
         'form': PatientInfoForm(instance=patient_rec),
-        'active_orders': patient_rec.orders.filter(level_id__lt=6),
-        'complete_orders': patient_rec.orders.filter(level_id__gte=6),
+        'active_orders': patient_rec.orders.filter(level_id__lt=5),
+        'complete_orders': patient_rec.orders.filter(level_id__gte=5),
     }
     return render(request, 'patient.html', context)
 
