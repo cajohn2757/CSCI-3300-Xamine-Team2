@@ -252,11 +252,11 @@ def order(request, order_id):
     elif cur_order.level_id == 3 and is_in_group(request.user, ['Technicians', 'Radiologists','Physicians']):
         # Prepare context for template if at imaging complete step
         if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
-            context['med_form'] = MedicationOrderForm(instance=cur_order)
+            context['mat_form'] = MaterialOrderForm(instance=cur_order)
     elif cur_order.level_id == 4 and is_in_group(request.user, ['Technicians', 'Radiologists','Physicians']):
         # Prepare context for template if at imaging complete step
         if request.user in cur_order.team.radiologists.all() | cur_order.team.technicians.all():
-            context['mat_form'] = MaterialOrderForm(instance=cur_order)
+            context['med_form'] = MedicationOrderForm(instance=cur_order)
     elif cur_order.level_id == 5 and is_in_group(request.user, ['Radiologists']):
         # Prepare context for template if at medication and material order step
         if request.user in cur_order.team.radiologists.all():
@@ -566,7 +566,7 @@ def new_med_order(request, order_id):
     if new_form.is_valid():
         new_medication_order = new_form.save()
         new_medication_order.order = cur_order
-        cur_order.level_id = 4
+        cur_order.level_id = 5
         new_medication_order.save()
         cur_order.save()
 
@@ -628,7 +628,7 @@ def new_mat_order(request, order_id):
     if new_form.is_valid():
         new_material_order = new_form.save()
         new_material_order.order = cur_order
-        cur_order.level_id = 5
+        cur_order.level_id = 4
         new_material_order.save()
         cur_order.save()
 
