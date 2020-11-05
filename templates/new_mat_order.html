@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+
+{% block header %}
+    {% load group_auth %}
+    {% load phone_number %}
+    <style>
+        .orderlink { 
+            color: black;
+             }
+        label{
+            font-weight: bold;
+        }
+    </style>
+
+{% endblock %}
+
+{% block main %}
+<form method="POST">
+    {% csrf_token %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class='display-4 text-center'>
+                New Material Order
+            </div>
+        </div>
+        <div class="col-12 mt-4">
+            <div class='h4 text-center'>
+                Patient Order Info
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col-md-3 col-12 mt-2">
+                    <div class='font-weight-bold'>
+                        Patient Name:
+                    </div>
+                    {{ order.patient.full_name }}
+                </div>
+                <div class="col-md-3 col-12 mt-2">
+                    <div class='font-weight-bold'>
+                        Patient Order ID:
+                    </div>
+                    {{ order.id }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row collapse show mat-order">
+        <div class="col-12 mt-4">
+            <div class='h4 text-center'>
+                Material Order Info
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_name">
+                Material:
+            </label>
+            {{ new_material_form.material }}
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_quantity">
+                Quantity:
+            </label>
+            {{ new_material_form.quantity }}
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_price">
+                Price:
+            </label>
+            {{ new_material_form.price }}
+        </div>
+        <div class="col mt-3 ">
+            <button type="submit" class="btn btn-primary">Save Material Info</button>
+            <a class="btn btn-secondary" data-toggle="collapse" href=".mat-order" onclick="resetForm()">Cancel</a>
+        </div>
+    </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}
+
+{% block afterscript %}
+<script>
+    function resetForm() {
+            document.getElementById("mat_info_form").reset();
+        }
+
+</script>
+
+{% endblock %}

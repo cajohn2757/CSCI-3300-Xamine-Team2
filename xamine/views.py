@@ -617,7 +617,7 @@ def mat_order(request, order_id, mat_order_id):
         'cur_mat_order': cur_mat_order,
         'mat_form': MaterialOrderForm(instance=cur_mat_order),
     }
-    return render(request, 'material_order.html', context)
+    return render(request, 'mat_order.html', context)
 
 
 @login_required()
@@ -630,20 +630,20 @@ def new_mat_order(request, order_id):
 
     cur_order = Order.objects.get(pk=order_id)
     # set up new patient request form with POST data
-    new_form = MedicationOrderForm(data=request.POST)
+    new_form = MaterialOrderForm(data=request.POST)
 
     # Check if form is valid. If so, assign doctor and save, the redir to a new order. Otherwise, show error.
     if new_form.is_valid():
-        new_medication_order = new_form.save()
-        new_medication_order.order = cur_order
-        new_medication_order.save()
+        new_material_order = new_form.save()
+        new_material_order.order = cur_order
+        new_material_order.save()
 
         return redirect('order', order_id=cur_order.pk)
 
     else:
         context = {
-            'new_medication_form': new_form,
+            'new_material_form': new_form,
             'show_modal': True,
             'order': cur_order,
         }
-        return render(request, 'new_med_order.html', context)
+        return render(request, 'new_mat_order.html', context)
