@@ -124,21 +124,6 @@ class NewOrderForm(forms.ModelForm):
         }
 
 
-class NewMedicationOrderForm(forms.ModelForm):
-    """ Handles Creation of new Medication Order """
-
-    class Meta:
-        model = MedicationOrder
-        fields = ['order', 'name', 'quantity', 'price']
-
-        widgets = {
-            'order': forms.HiddenInput(),
-            'name': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'on'}),
-            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
-        }
-
-
 class MedicationOrderForm(forms.ModelForm):
     """ Handles Patient Medication Prescription Inputs """
 

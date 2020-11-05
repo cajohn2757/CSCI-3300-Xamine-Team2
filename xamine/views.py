@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 from xamine.forms import ImageUploadForm
-from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm, NewMedicationOrderForm
+from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
 from xamine.utils import is_in_group, get_image_files
 from xamine.tasks import send_notification
