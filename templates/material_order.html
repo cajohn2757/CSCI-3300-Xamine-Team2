@@ -16,13 +16,10 @@
         label2 {
 
         }
-
-        .invisible { visibility: hidden; }
     </style>
 {% endblock %}
 
 {% block main %}
-
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -32,47 +29,51 @@
                 <a data-toggle="collapse" href=".mat-order" class="text-muted small ml-2 collapse show mat-order">
                     Edit
                 </a>
-                <div class="container">
-                        <hr class="beautiful-line">
-                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12 col-12">
+                <div class="invisible">
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Order ID:</label>
+                        {{ cur_order.id }}
+                    </div>
+                </div>
                 <div class="row collapse show mat-order">
                     <div class="col-md-4 col-12 mt-1">
                         <label>Material:</label>
-                        {{ material_info.name }}
+                        {{ cur_mat_order.material }}
                     </div>
                     <div class="col-md-4 col-12 mt-1">
                         <label>Quantity:</label>
-                        {{ material_info.quantity }}
+                        {{ cur_mat_order.quantity }}
                     </div>
                     <div class="col-md-4 col-12 mt-1">
                         <label>Price:</label><label2> $</label2>
-                        {{ material_info.price }}
+                        {{ cur_mat_order.price }}
                     </div>
                     <div class="container">
                         <hr class="beautiful-line">
                     </div>
-                    <a href="{% url 'order' order_id=cur_order.id %}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Link to Medication Order">
-                        Back to Order
-                    </a>
                 </div>
                 <form id="material_order_form" method="POST">
                     {% csrf_token %}
+                    <div class="invisible">
+                            <label>Order ID:</label>
+                            {{ form.order|default_if_none:'cur_order.id' }}
+                    </div>
                     <div class="row collapse mat-order">
                         <div class="col-md-4 col-12 mt-1">
                             <label>Material:</label><br>
-                            {{ mat_form.name }}
+                            {{ form.material }}
                         </div>
                         <div class="col-md-4 col-12 mt-1">
                             <label>Quantity:</label><br>
-                            {{ mat_form.quantity }}
+                            {{ form.quantity }}
                         </div>
                         <div class="col-md-4 col-12 mt-1">
                             <label>Price:</label><br>
-                            {{ mat_form.price }}
+                            {{ form.price }}
                         </div>
                         <div class="container">
                             <hr class="beautiful-line">
@@ -86,6 +87,7 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 {% block afterscript %}
@@ -104,5 +106,13 @@
             document.getElementById("material_order_form").reset();
         }
 
+        var cleavePhone = new Cleave('.input-phone', {
+            phone: true,
+            phoneRegionCode: 'US'
+        });
+
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+        });
     </script>
 {% endblock %}
