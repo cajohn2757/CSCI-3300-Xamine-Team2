@@ -131,10 +131,10 @@
                         {% endif %}
                         {% if cur_order.level_id == 3 %}
                             <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#medication_order">
-                                Medication Order Form
+                                New Medication Order Form
                             </a>
                         {% endif %}
-                        {% if cur_order.level_id == 4 %}
+                        {% if cur_order.level_id > 3 %}
                             <a href="{% url 'med_order' order_id=cur_order.id %}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Link to Medication Order">
                             View Medication Order
                             </a>

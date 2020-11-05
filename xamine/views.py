@@ -549,7 +549,9 @@ def new_med_order(request, order_id):
     if new_form.is_valid():
         new_medication_order = new_form.save()
         new_medication_order.order = cur_order
+        cur_order.level_id = 4
         new_medication_order.save()
+        cur_order.save()
 
         return redirect('order', order_id=cur_order.pk)
 
