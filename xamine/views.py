@@ -520,7 +520,7 @@ def get_order_cost(request, order_num):
 
 @login_required
 def med_order(request, med_order_id=None, order_id=None):
-    """ Displays the patient info and orders """
+    """ Displays the medication info and orders """
 
     # Grab medication order from the database
     cur_order = Order.objects.get(pk=order_id)
@@ -581,23 +581,16 @@ def new_med_order(request, order_id):
         return render(request, 'new_med_order.html', context)
 
 
-def mat_order(request, order_id, mat_order_id):
+def mat_order(request, order_id=None, mat_order_id=None):
+    """ Displays the medication info and orders """
 
-    # Attempt to grab order via order_id from url. 404 if not found.
-    try:
-        cur_order = Order.objects.get(pk=order_id)
-        cur_mat_order = MaterialOrder.objects.get(pk=mat_order_id)
-    except Order.DoesNotExist:
-        raise Http404
+    # Grab medication order from the database
+    cur_order = Order.objects.get(pk=order_id)
+    material_order_info = MaterialOrder.objects.get(pk=order_id)
 
     # Check if it is a post request. If so, build our form with the post data.
     if request.method == 'POST':
-        # Copy form data and assign order to mat_order
-        form_data = request.POST.copy()
-        form_data['order'] = order_id
-
-        # Set up form with our copied data
-        form = MaterialOrderForm(data=form_data, instance=cur_mat_order)
+        form = MedicationOrderForm(data=request.POST, instance=material_order_info)
 
         # Ensure form is valid. If so, save. If not, show error.
         if form.is_valid():
@@ -609,13 +602,12 @@ def mat_order(request, order_id, mat_order_id):
                 'headline3': f"{form.errors}"
             }
             return show_message(request, messages)
-    else:
-        form = MaterialOrderForm()
-    # Set up the variables for our template
+
+    # Set up variables for our template and render it
     context = {
+        'material_info': material_order_info,
         'cur_order': cur_order,
-        'cur_mat_order': cur_mat_order,
-        'mat_form': MaterialOrderForm(instance=cur_mat_order),
+        'mat_form': MaterialOrderForm(instance=material_order_info),
     }
     return render(request, 'mat_order.html', context)
 
@@ -636,7 +628,9 @@ def new_mat_order(request, order_id):
     if new_form.is_valid():
         new_material_order = new_form.save()
         new_material_order.order = cur_order
+        cur_order.level_id = 5
         new_material_order.save()
+        cur_order.save()
 
         return redirect('order', order_id=cur_order.pk)
 
