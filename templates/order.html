@@ -503,7 +503,7 @@
                         {% endif %}
                     </div>
                 </div>
-                {% if cur_order.level_id > 4 and request.user|has_group:'Physicians' and request.user == cur_order.patient.doctor %}
+                {% if cur_order.level_id > 5 and request.user|has_group:'Physicians' and request.user == cur_order.patient.doctor %}
                     <div class="row mt-3">
                         <div class="col-12">
                             <button id="patient_send" type="button" onclick="sendPatientEmail()" class="btn btn-outline-primary">

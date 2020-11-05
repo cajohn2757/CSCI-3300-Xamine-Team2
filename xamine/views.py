@@ -582,15 +582,15 @@ def new_med_order(request, order_id):
 
 
 def mat_order(request, order_id=None, mat_order_id=None):
-    """ Displays the medication info and orders """
+    """ Displays the material info and orders """
 
-    # Grab medication order from the database
+    # Grab material order from the database
     cur_order = Order.objects.get(pk=order_id)
     material_order_info = MaterialOrder.objects.get(pk=order_id)
 
     # Check if it is a post request. If so, build our form with the post data.
     if request.method == 'POST':
-        form = MedicationOrderForm(data=request.POST, instance=material_order_info)
+        form = MaterialOrderForm(data=request.POST, instance=material_order_info)
 
         # Ensure form is valid. If so, save. If not, show error.
         if form.is_valid():
