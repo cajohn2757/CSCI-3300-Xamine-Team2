@@ -243,5 +243,5 @@ class Balance(models.Model):
 
 
     def __str__(self):
-        return f"#{self.patient} - {self.totalBalance} - {self.amountPaid}"
+        return f"#{self.patient}"
         # ask corey to check this line. Not sure what its supposed to do.

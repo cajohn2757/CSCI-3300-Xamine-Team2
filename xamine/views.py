@@ -54,6 +54,9 @@ def index(request):
         # Find unscheduled appointments
         context['unsched_orders'] = Order.objects.filter(level_id=1, appointment__isnull=True)
 
+        # Find completed appointments for today
+        context['complt_orders'] = Order.objects.filter(level_id=6, appointment__range=(today_min, today_max))
+
     # Check if administrator or technician
     if see_all or is_in_group(request.user, "Technicians"):
         # Pass into context all checked in orders for any team where the logged in user is a technician.
