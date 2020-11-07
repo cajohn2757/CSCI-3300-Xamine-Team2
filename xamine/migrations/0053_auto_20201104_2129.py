@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+from xamine.utils import load_init_vals
 
 
 class Migration(migrations.Migration):
@@ -27,3 +28,4 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='med_order', to='xamine.order'),
         ),
     ]
+load_init_vals()
