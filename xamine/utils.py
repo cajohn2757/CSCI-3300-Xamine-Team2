@@ -3,6 +3,7 @@ from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, Moda
 from django.db.models import F
 import os
 
+
 def get_setting(name, default=None):
     """ Get the setting from the database """
 
@@ -40,6 +41,7 @@ def get_image_files(images):
     # Return thumbnail list established above
     return thumbnails
 
+
 def get_order_cost(order_num):
     running_order_cost = 0
     cur_order = Order.objects.filter(pk=order_num)
@@ -65,28 +67,29 @@ def get_order_cost(order_num):
 
     return totals_info # totals info list
 
+
 def update_balance(patientid):
     """Calls get_order_cost for all orders of a patient and updates database"""
    # if request.method == 'POST':
     try:
-        check = Balance.objects.values_list('totalBalance').get(patient_id = patientid)[0]
+        check = Balance.objects.values_list('totalBalance').get(patient_id=patientid)[0]
     except Balance.DoesNotExist:
-        temp = Balance(patient_id = patientid)
+        temp = Balance(patient_id=patientid)
         temp.save()
 
     running_cost = 0
-    order_list =  Order.objects.values_list('id', 'modality_id', 'modality_billed').filter(patient_id = patientid)
+    order_list = Order.objects.values_list('id', 'modality_id', 'modality_billed').filter(patient_id=patientid)
     for x in order_list:
         info = get_order_cost(x[0])
         if x[2] == 0: # Modality
             running_cost += info[0][1]
-            order_row = Order.objects.get(pk = x[0])
+            order_row = Order.objects.get(pk=x[0])
             order_row.modality_billed = F('modality_billed') + 1
             order_row.save()
         try:
             if info[1][2] == 0: # Medication
                 running_cost += info[1][3]
-                medication_row = MedicationOrder.objects.get(order = x[0])
+                medication_row = MedicationOrder.objects.get(order=x[0])
                 medication_row.billed = F('billed') + 1
                 medication_row.save()
         except:
@@ -94,7 +97,7 @@ def update_balance(patientid):
         try:
             if info[2][2] == 0: # Materials
                 running_cost += info[2][3]
-                material_row = MaterialOrder.objects.get(order = x[0])
+                material_row = MaterialOrder.objects.get(order=x[0])
                 material_row.billed = F('billed') + 1
                 material_row.save()
         except:
@@ -109,6 +112,7 @@ def update_balance(patientid):
 
 def load_init_vals():
     os.system('cmd /c "python manage.py loaddata initial-data.json"')
+
 
 def finalize_bill(patientid):
     """ Queries all orders that belong to a patient and calculates how much the Insurance is co-paying for modalities"""
@@ -132,6 +136,8 @@ def finalize_bill(patientid):
     amountInsrow = Balance.objects.get(patient_id=patientid)
     amountInsrow.amount_Ins_Paid = F('amount_Ins_Paid') + Ins_Paid
     amountInsrow.save()
+
+
 def get_invoice(patientid):
     check_orders = Order.objects.values_list('id').filter(patient_id=patientid)[0]
     invoice = dict()

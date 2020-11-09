@@ -18,7 +18,7 @@
     --element3: ;
     --primary: #313336;
     --secondary: #1a1b1c;
-    --tertiary: ;
+    --tertiary: #d3d3d3;
 }
 :root[color-mode="light"] .light--hidden {
   display: none;
@@ -75,6 +75,7 @@ label {
 table {
     border-collapse: separate;
     border-spacing: 0 5px;
+    color: var(--tertiary);
 }
 thead th {
     background-color: bg-info;
