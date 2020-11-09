@@ -3,6 +3,12 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <a class="navbar light--hidden colorbutton" href="#">
+                <img src="https://svgsilh.com/svg/159508.svg" style="width: 30px; height: 30px;">
+            </a>
+            <a class="navbar dark--hidden colorbutton" href="#">
+                <img src="https://svgsilh.com/svg/30466.svg" style="width: 30px; height: 30px;">
+            </a>
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
 {#                    <li class="nav-item">#}
@@ -26,3 +32,9 @@
                 <span class="navbar-text">Logged in as {{ user.get_username }}</span>
             </div>
         </nav>
+<script>
+    function changeLightDark() {
+        $( "lightDarkButton" ).text( "Dark" );
+        alert("Switched");
+    }
+</script>

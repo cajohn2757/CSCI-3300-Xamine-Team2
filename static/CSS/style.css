@@ -1,23 +1,32 @@
-:root {
-    /* dark mode color template */
-    --dkmd_dkstblue: ;
-    --dkmd_dkblue: ;
-    --dkmd_blue: ;
-    --dkmd_ltblue: ;
-
-    /* hopsital color template */
-    --hs_white: ;
-    --hs_teal: ;
-    --hs_blue: ;
-    --hs_black: ;
-
-    /* high contrast color template */
-    --hc_red: ;
-    --hc_yellow: ;
-    --hc_ltblue: ;
-    --hc_blue: ;
-    --hc_purple: ;
+:root[color-mode="light"] {
+    --surface1: ;
+    --surface2: ;
+    --surface3: ;
+    --element1: ;
+    --element2: ;
+    --element3: ;
+    --primary: #edf4ff;
+    --secondary: #f0f0f0;
+    --tertiary: ;
 }
+:root[color-mode="dark"] {
+    --surface1: ;
+    --surface2: ;
+    --surface3: ;
+    --element1: ;
+    --element2: ;
+    --element3: ;
+    --primary: #313336;
+    --secondary: #1a1b1c;
+    --tertiary: ;
+}
+:root[color-mode="light"] .light--hidden {
+  display: none;
+}
+:root[color-mode="dark"] .dark--hidden {
+  display:none;
+}
+
 head {
 
 }
@@ -34,7 +43,7 @@ hr{
 
 }
 body {
-
+  background-color: var(--primary);
 }
 p {
 
@@ -52,7 +61,7 @@ span {
 
 }
 nav {
-
+  background-color: var(--secondary);
 }
 form {
 
