@@ -158,3 +158,12 @@ def get_invoice(patientid):
         info[2].pop('billed')
         invoice[x] = info
     return invoice
+
+def pay_order(patientid, quantity):
+    try:
+        payrow = Balance.objects.get(patient_id=patientid)
+        payrow.amount_Pat_Paid = F('amount_Pat_Paid') + quantity
+        payrow.save()
+    except:
+        pass
+
