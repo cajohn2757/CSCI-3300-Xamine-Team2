@@ -2,23 +2,23 @@
     --surface1: ;
     --surface2: ;
     --surface3: ;
-    --element1: ;
+    --element1: #373a40;
     --element2: ;
     --element3: ;
-    --primary: #edf4ff;
-    --secondary: #f0f0f0;
-    --tertiary: ;
+    --primary: #eeeeee;
+    --secondary: #686d76;
+    --tertiary: #bebebe;
 }
 :root[color-mode="dark"] {
     --surface1: ;
     --surface2: ;
     --surface3: ;
-    --element1: ;
+    --element1: #3282b8;
     --element2: ;
     --element3: ;
-    --primary: #313336;
-    --secondary: #1a1b1c;
-    --tertiary: #d3d3d3;
+    --primary: #1b262c;
+    --secondary: #bbe1fa;
+    --tertiary: #0f4c75;
 }
 :root[color-mode="light"] .light--hidden {
   display: none;
@@ -78,8 +78,8 @@ table {
     color: var(--tertiary);
 }
 thead th {
-    background-color: bg-info;
-    color: white;
+    background-color: var(--primary);
+    color: var(--secondary);
 }
 tbody {
 
@@ -162,7 +162,7 @@ tr th:last-child {
 
 }
 .h5 {
-
+    color: var(--element1);
 }
 .h6 {
     
@@ -179,14 +179,14 @@ tr th:last-child {
 .tab{
     float: left;
   border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  background-color: var(--primary);
   width: 10%;
   height: 800px;
 }
 .tab button{
     display: block;
-  background-color: inherit;
-  color: black;
+  background-color: var(--primary);
+  color: var(--secondary);
   padding: 22px 16px;
   width: 100%;
   border: none;
@@ -199,7 +199,7 @@ tr th:last-child {
     background-color: #ddd;
 }
 .tab button.active {
-  background-color: #ccc;
+  background-color: var(--tertiary);
 }
 
 /* Style the tab content */
