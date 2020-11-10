@@ -15,6 +15,7 @@ urlpatterns = [
     path('order/<int:order_id>/mat-order', views.mat_order, name='mat_order'),  # Internal viewing and submitting of material orders
     path('order/<int:order_id>/new-med-order', views.new_med_order, name='new_med_order'),  # Start new medication order
     path('order/<int:order_id>/new-mat-order', views.new_mat_order, name='new_mat_order'),  # Start new material order
+    path('order/<int:order_id>/order-invoice', views.invoice, name='order_invoice'), # Internal viewing of invoice
 
     path('patient/<int:pat_id>/', views.patient, name='patient'),  # View patient info
     path('patient/', views.patient_lookup, name='patient_lookup'),  # lookup patients by DOB

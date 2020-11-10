@@ -60,13 +60,24 @@ def get_order_cost(order_num):
         materials_info = MaterialOrder.objects.values_list('material', 'quantity', 'billed', 'price').get(order_id = order_num)
     except MaterialOrder.DoesNotExist:
         pass
-    totals_info =[modality_info, medication_info, materials_info]
-
+    sub = 0
+    try:
+        sub += modality_info[1]
+    except:
+        pass
+    try:
+        sub += materials_info[3]
+    except:
+        pass
+    try:
+        sub += medication_info[3]
+    except:
+        pass
+    totals_info =[modality_info, medication_info, materials_info, sub]
 
     # Still need to setup context and reference .html document
 
     return totals_info # totals info list
-
 
 def update_balance(patientid):
     """Calls get_order_cost for all orders of a patient and updates database"""

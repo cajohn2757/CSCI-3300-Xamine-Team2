@@ -10,7 +10,7 @@ from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, Moda
 from xamine.forms import ImageUploadForm
 from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
-from xamine.utils import is_in_group, get_image_files
+from xamine.utils import is_in_group, get_image_files, get_order_cost, finalize_bill
 from xamine.tasks import send_notification
 
 
@@ -274,7 +274,7 @@ def order(request, order_id):
     # Define which user groups can see medical info, add to context
     medical_groups = ['Technicians', 'Radiologists', 'Physicians']
     context['show_medical'] = is_in_group(request.user, medical_groups)
-
+    context['sub_cost'] = get_order_cost(order_id)[3]
     # Send thumbnails into context and render HTML
     context['thumbnails'] = get_image_files(cur_order.images.all())
     return render(request, 'order.html', context)
@@ -500,27 +500,6 @@ def show_message(request, headlines):
     """ Handles showing error messages """
     return render(request, 'message.html', headlines)
 
-
-@login_required
-def get_order_cost(request, order_num):
-    running_order_cost = 0
-    cur_order = Order.objects.get(pk=order_num)
-    # Check if we have a POST request
-    if request.method == 'POST':
-
-        # Check if level and permissions for the logged in user are both receptionists or admins
-        if cur_order.level_id == 1 and is_in_group(request.user, ['Technicians', 'Radiologists']):
-            order_modality = Order.objects.values_list('modality_id').get(pk = order_num)[0]
-            modality_info = ModalityOption.objects.values_list('name', 'price').get(pk = order_modality) #cost of modality to variable
-            medication_info = MedicationOrder.objects.values_list('name', 'quantity', 'price').get(order_id = order_num)
-            materials_info = MaterialOrder.object.values_list('name', 'price').get(order_id = order_num)
-            Totals_info =(modality_info, medication_info, materials_info)
-
-            # Still need to setup context and reference .html document
-
-            return render(request)
-
-
 @login_required
 def med_order(request, med_order_id=None, order_id=None):
     """ Displays the medication info and orders """
@@ -644,3 +623,23 @@ def new_mat_order(request, order_id):
             'order': cur_order,
         }
         return render(request, 'new_mat_order.html', context)
+
+
+@login_required()
+def invoice(request, order_id=None):
+    """View Invoice of the current order"""
+    cur_order = Order.objects.get(pk=order_id)
+    finalize_bill(cur_order.patient_id)
+    invoice_info = get_order_cost(order_id)
+    modality_info = {
+        'name': invoice_info[0][0],
+        'price': invoice_info[0][1]
+    }
+    context = {
+        'modality_info': modality_info,
+        'medication_info': MedicationOrder.objects.get(pk=order_id),
+        'materials_info': MaterialOrder.objects.get(pk=order_id),
+        'final_price': invoice_info[3],
+        'cur_order': cur_order,
+    }
+    return render(request, 'order_invoice.html', context)
