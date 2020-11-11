@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from colorful.fields import RGBColorField
 from intl_tel_input.widgets import IntlTelInputWidget
-from xamine.models import Patient, Order, Image, MedicationOrder, MaterialOrder, ColorScheme
+from xamine.models import Patient, Order, Image, MedicationOrder, MaterialOrder, ColorScheme, Transaction
 
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
 
@@ -12,6 +12,12 @@ yesnoch = (
     (True, 'Yes'),
 )
 
+paymentch = (
+    ('c_card', 'Credit Card'),
+    ('d_card', 'Debit Card'),
+    ('cash', 'Cash'),
+    ('check', 'Check'),
+)
 
 class PatientInfoForm(forms.ModelForm):
     """ Handles creation and updating of Patient model """
@@ -168,4 +174,17 @@ class ColorSchemeForm(forms.ModelForm):
             'mainTheme': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF']),
             'mainPrimary': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF']),
             'mainSecondary': RGBColorField(colors=['#FF0000', '#00FF00', '#0000FF'])
+        }
+
+class TransactionForm(forms.ModelForm):
+    """Handles patient transactions"""
+
+    class Meta:
+        model = Transaction
+        fields = ['patient', 'payment_method', 'amount']
+
+        widgets = {
+            'patient': forms.HiddenInput(),
+            'payment_method': forms.Select(attrs={'class': 'form-control'}, choices=paymentch),
+            'amount': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'})
         }
