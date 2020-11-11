@@ -1,0 +1,108 @@
+{% extends 'base/base.html' %}
+{% load phone_number %}
+{% load crispy_forms_filters %}
+
+{% block header %}
+
+    {% load group_auth %}
+    {{ form.media.css }}
+
+    <style>
+        .orderlink { color: black; }
+
+        label {
+            font-weight: bold;
+        }
+        label2 {
+
+        }
+
+        .invisible { visibility: hidden; }
+    </style>
+{% endblock %}
+
+{% block main %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <span class="display-4">
+                    Transaction
+                </span>
+                <a data-toggle="collapse" href=".med-order" class="text-muted small ml-2 collapse show med-order">
+                    Edit
+                </a>
+                <div class="container">
+                        <hr class="beautiful-line">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <div class="row collapse show med-order">
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Medication:</label>
+                        {{ medication_info.name }}
+                    </div>
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Quantity:</label>
+                        {{ medication_info.quantity }}
+                    </div>
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Price:</label><label2> $</label2>
+                        {{ medication_info.price }}
+                    </div>
+                    <div class="container">
+                        <hr class="beautiful-line">
+                    </div>
+                    <a href="{% url 'order' order_id=cur_order.id %}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Link to Medication Order">
+                        Back to Order
+                    </a>
+                </div>
+                <form id="medication_order_form" method="POST">
+                    {% csrf_token %}
+                    <div class="row collapse med-order">
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Medication:</label><br>
+                            {{ med_form.name }}
+                        </div>
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Quantity:</label><br>
+                            {{ med_form.quantity }}
+                        </div>
+                        <div class="col-md-4 col-12 mt-1">
+                            <label>Price:</label><br>
+                            {{ med_form.price }}
+                        </div>
+                        <div class="container">
+                            <hr class="beautiful-line">
+                        </div>
+                        <div class="col mt-3 ">
+                            <button class="btn btn-primary">Save Medication Order</button>
+                            <a class="btn btn-secondary" data-toggle="collapse" href=".med-order" onclick="resetForm()">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block afterscript %}
+
+    <!-- start form media -->
+    {{ form.media.js }}
+    <!-- end form media -->
+
+    <!-- start cleave media -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.5.10/cleave.min.js" integrity="sha256-lqWAcasN+EP6bxH3+SBODfrydkyHQ7FDwcI44sZeff4=" crossorigin="anonymous"></script>
+    <script src="https://nosir.github.io/cleave.js/dist/cleave-phone.i18n.js"></script>
+    <!-- end cleave media -->
+
+    <script>
+        function resetForm() {
+            document.getElementById("medication_order_form").reset();
+        }
+
+    </script>
+{% endblock %}

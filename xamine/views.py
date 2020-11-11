@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
+from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance, Transaction
 from xamine.forms import ImageUploadForm
 from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm, TransactionForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
@@ -309,6 +309,7 @@ def patient(request, pat_id=None):
         'form': PatientInfoForm(instance=patient_rec),
         'active_orders': patient_rec.orders.filter(level_id__lt=6),
         'complete_orders': patient_rec.orders.filter(level_id__gte=6),
+        'transactions': Transaction.objects.filter(patient_id=pat_id),
     }
     return render(request, 'patient.html', context)
 
@@ -665,3 +666,26 @@ def new_transaction(request, pat_id):
             'patient': cur_patient,
         }
         return render(request, 'new_transaction.html', context)
+
+def transaction(request, transaction_id):
+    cur_transaction = Transaction.objects.get(pk=transaction_id)
+    if request.method == 'POST':
+        form = TransactionForm(data=request.POST, instance=cur_transaction)
+
+        # Ensure form is valid. If so, save. If not, show error.
+        if form.is_valid():
+            form.save()
+        else:
+            messages = {
+                'headline1': 'Invalid Form',
+                'headline2': 'Please try again.',
+                'headline3': f"{form.errors}"
+            }
+            return show_message(request, messages)
+
+    context = {
+        'transaction_order': cur_transaction,
+        'transaction_form': TransactionForm(instance=cur_transaction),
+    }
+
+    return render(request, 'transaction.html', context)
