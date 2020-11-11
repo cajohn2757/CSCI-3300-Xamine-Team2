@@ -1,0 +1,88 @@
+{% extends 'base/base.html' %}
+
+{% block header %}
+    {% load group_auth %}
+    {% load phone_number %}
+    <style>
+        .orderlink { 
+            color: black;
+             }
+        label{
+            font-weight: bold;
+        }
+    </style>
+
+{% endblock %}
+
+{% block main %}
+<form method="POST">
+    {% csrf_token %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class='display-4 text-center'>
+                New transaction
+            </div>
+        </div>
+        <div class="col-12 mt-4">
+            <div class='h4 text-center'>
+                Patient Information
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col-md-3 col-12 mt-2">
+                    <div class='font-weight-bold'>
+                        Patient Name:
+                    </div>
+                    {{ patient.full_name }}
+                </div>
+                <div class="col-md-3 col-12 mt-2">
+                    <div class='font-weight-bold'>
+                        PatientID:
+                    </div>
+                    {{ patient.id }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row collapse show med-order">
+        <div class="col-12 mt-4">
+            <div class='h4 text-center'>
+                Payment Information
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_payment_method">
+                Method:
+            </label>
+            {{ new_transaction.payment_method }}
+        </div>
+        <div class="col-md-4 col-12 mt-2">
+            <label for="id_amount">
+                Amount:
+            </label>
+            {{ new_transaction.amount }}
+        </div>
+        <div class="col mt-3 ">
+            <button type="submit" class="btn btn-primary">Submit Payment</button>
+            <a class="btn btn-secondary" data-toggle="collapse" href=".new-transaction" onclick="resetForm()">Cancel</a>
+        </div>
+    </div>
+    </div>
+</div>
+</form>
+
+{% endblock %}
+
+{% block afterscript %}
+<script>
+    function resetForm() {
+            document.getElementById("transaction_form").reset();
+        }
+
+</script>
+
+{% endblock %}

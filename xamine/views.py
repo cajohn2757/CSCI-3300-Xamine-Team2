@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
 from xamine.forms import ImageUploadForm
-from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm
+from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm, TransactionForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
 from xamine.utils import is_in_group, get_image_files, get_order_cost, finalize_bill
 from xamine.tasks import send_notification
@@ -643,3 +643,25 @@ def invoice(request, order_id=None):
         'cur_order': cur_order,
     }
     return render(request, 'order_invoice.html', context)
+
+
+def new_transaction(request, pat_id):
+    if not request.method == 'POST':
+        raise Http404
+    cur_patient = Patient.objects.get(pk=pat_id)
+
+    new_form = TransactionForm(data=request.POST)
+
+    if new_form.is_valid():
+        new_transaction = new_form.save()
+        new_transaction.patient = pat_id
+        new_transaction.save()
+        return redirect('patient', order_id=cur_patient.pk)
+
+    else:
+        context = {
+            'new_transaction': new_form,
+            'show_modal': True,
+            'patient': cur_patient,
+        }
+        return render(request, 'new_transaction.html', context)
