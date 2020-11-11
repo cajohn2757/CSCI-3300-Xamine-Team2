@@ -245,3 +245,12 @@ class Balance(models.Model):
     def __str__(self):
         return f"#{self.patient}"
         # ask corey to check this line. Not sure what its supposed to do.
+
+class Transaction(models.Model):
+    """"Keeps track of all transactions"""
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='transaction_patient_id')
+    payment_method = models.CharField(max_length=128)
+    amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"#{self.id} - {self.patient}"
