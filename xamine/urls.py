@@ -22,7 +22,7 @@ urlpatterns = [
     path('patient/new', views.new_patient, name='new_patient'),  # Submit new patient info
     path('patient/<int:pat_id>/new-order', views.new_order, name='new_order'),  # Start new order for patient
     path('patient/<int:pat_id>/new-transaction', views.new_transaction, name='new_transaction'),
-    path('patient/<int:pat_id>/transaction/<int:transaction_id>', views.transaction, name='transaction'),
+    path('patient/<int:pat_id>/transaction/', views.transaction, name='transaction'),
     path('image/<int:img_id>/remove', views.remove_file, name='remove_image'),  # Remove specified image
 
 ]

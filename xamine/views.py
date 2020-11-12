@@ -655,9 +655,9 @@ def new_transaction(request, pat_id):
 
     if new_form.is_valid():
         new_transaction = new_form.save()
-        new_transaction.patient = pat_id
+        new_transaction.patient = cur_patient
         new_transaction.save()
-        return redirect('patient', order_id=cur_patient.pk)
+        return redirect('patient', patient_id=cur_patient.pk)
 
     else:
         context = {
@@ -667,8 +667,9 @@ def new_transaction(request, pat_id):
         }
         return render(request, 'new_transaction.html', context)
 
-def transaction(request, transaction_id):
+def transaction(request, pat_id, transaction_id):
     cur_transaction = Transaction.objects.get(pk=transaction_id)
+    cur_patient = Patient.objects.get(pk=pat_id)
     if request.method == 'POST':
         form = TransactionForm(data=request.POST, instance=cur_transaction)
 
@@ -684,8 +685,9 @@ def transaction(request, transaction_id):
             return show_message(request, messages)
 
     context = {
-        'transaction_order': cur_transaction,
+        'transaction_info': cur_transaction,
         'transaction_form': TransactionForm(instance=cur_transaction),
+        'cur_patient': cur_patient,
     }
 
     return render(request, 'transaction.html', context)
