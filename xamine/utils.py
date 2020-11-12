@@ -1,5 +1,5 @@
 from xamine.models import AppSetting
-from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance
+from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, ModalityOption, MaterialOrder, Balance, Transaction
 from django.db.models import F
 import os
 
@@ -130,6 +130,8 @@ def finalize_bill(patientid):
     check_orders = Order.objects.values_list('id', 'finished_bill', 'modality').filter(patient_id=patientid)
     update_balance(patientid)
     modality_list = [0, 0, 0]
+    Ins_Paid = 0
+
     for x in check_orders:
         if x[1] == 0:
             if x[2] == 1:
@@ -141,9 +143,9 @@ def finalize_bill(patientid):
             finishedrow = Order.objects.get(pk=x[0])
             finishedrow.finished_bill = F('finished_bill') + 1
             finishedrow.save()
-
+            Ins_Paid = get_order_cost(x[0])[3] - ((modality_list[0] * 100) + (modality_list[1] * 75) + ( modality_list[2] * 200))  # make sure to update the copay amounts so that they can be changed IRL
+    update_transactions(patientid)
     total_balance = Balance.objects.values_list('totalBalance').get(patient_id=patientid)[0]
-    Ins_Paid = total_balance - ((modality_list[0]*100)+(modality_list[1]*75)+(modality_list[2]*200)) #make sure to update the copay amounts so that they can be changed IRL
     amountInsrow = Balance.objects.get(patient_id=patientid)
     amountInsrow.amount_Ins_Paid = F('amount_Ins_Paid') + Ins_Paid
     amountInsrow.save()
@@ -159,11 +161,15 @@ def get_invoice(patientid):
         invoice[x] = info
     return invoice
 
-def pay_order(patientid, quantity):
-    try:
-        payrow = Balance.objects.get(patient_id=patientid)
-        payrow.amount_Pat_Paid = F('amount_Pat_Paid') + quantity
-        payrow.save()
-    except:
-        pass
+def update_transactions(patientid):
+
+    transaction_list = Transaction.objects.values_list('id', 'amount', 'billed').filter(patient_id=patientid)
+    for x in transaction_list:
+        if(x[2] == 0):
+            patient_paying = Balance.objects.get(pk=patientid)
+            patient_paying.amount_Pat_Paid = F('amount_Pat_Paid') + x[1] + 1
+            patient_paying.save()
+            billed_pay = Transaction.objects.get(pk=x[0])
+            billed_pay.billed = F('billed') + 1
+            billed_pay.save()
 

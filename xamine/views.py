@@ -10,7 +10,7 @@ from xamine.models import Order, Patient, Image, OrderKey, MedicationOrder, Moda
 from xamine.forms import ImageUploadForm
 from xamine.forms import NewOrderForm, PatientLookupForm, MedicationOrderForm, MaterialOrderForm, TransactionForm
 from xamine.forms import PatientInfoForm, ScheduleForm, TeamSelectionForm, AnalysisForm
-from xamine.utils import is_in_group, get_image_files, get_order_cost, finalize_bill
+from xamine.utils import is_in_group, get_image_files, get_order_cost, finalize_bill, update_balance, update_transactions
 from xamine.tasks import send_notification
 
 
@@ -304,12 +304,15 @@ def patient(request, pat_id=None):
             return show_message(request, messages)
 
     # Set up variables for our template and render it
+
+    finalize_bill(pat_id)
     context = {
         'patient_info': patient_rec,
         'form': PatientInfoForm(instance=patient_rec),
         'active_orders': patient_rec.orders.filter(level_id__lt=6),
         'complete_orders': patient_rec.orders.filter(level_id__gte=6),
         'transactions': Transaction.objects.filter(patient_id=pat_id),
+        'amount_due': Balance.get_patient_paying(pat_id),
     }
     context['transaction_form'] = TransactionForm(instance=patient_rec)
     return render(request, 'patient.html', context)

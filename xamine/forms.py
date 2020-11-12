@@ -187,4 +187,5 @@ class TransactionForm(forms.ModelForm):
             'patient': forms.HiddenInput(),
             'payment_method': forms.Select(attrs={'class': 'form-control'}, choices=paymentch),
             'amount': forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
+            'billed': forms.HiddenInput(),
         }

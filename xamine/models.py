@@ -7,8 +7,8 @@ from django.dispatch.dispatcher import receiver
 from partial_date import PartialDateField
 from colorful.fields import RGBColorField
 
-from xamine.validators import validate_file_size, check_past_date, check_future_date
 
+from xamine.validators import validate_file_size, check_past_date, check_future_date
 
 class Level(models.Model):
     """ Model to define different points in order workflow """
@@ -238,7 +238,7 @@ class Balance(models.Model):
     @staticmethod
     def get_patient_paying(patientid):
         pay_list = Balance.objects.values_list('totalBalance', 'amount_Pat_Paid', 'amount_Ins_Paid').filter(patient_id=patientid)[0]
-        return pay_list[0] - pay_list[2]
+        return pay_list[0] - pay_list[2] - pay_list[1]
 
 
 
@@ -251,6 +251,7 @@ class Transaction(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='transaction_patient_id', null=True, blank=True)
     payment_method = models.CharField(max_length=128)
     amount = models.IntegerField(default=0)
+    billed = models.IntegerField(default=0)
 
     def __str__(self):
         return f"#{self.id} - {self.patient}"

@@ -137,12 +137,19 @@
                         </label><br>
                         {{ patient_info.notes }}
                     </div>
+
                     <div class="container">
                         <hr class="beautiful-line">
                     </div>
-                        <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#transaction">
+
+                    <div class="col-md-4 col-12 mt-1">
+                        <label>Amount Due:</label><br>
+                        {{ amount_due }}
+                    </div>
+
+                    <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#transaction">
                                 New Payment
-                            </a>
+                    </a>
                 </div>
                 <form id="patient_info_form" method="POST">
                     {% csrf_token %}
