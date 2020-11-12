@@ -68,7 +68,9 @@
         </div>
         <div class="col mt-3 ">
             <button type="submit" class="btn btn-primary">Submit Payment</button>
-            <a class="btn btn-secondary" data-toggle="collapse" href=".new-transaction" onclick="resetForm()">Cancel</a>
+           <a href="{% url 'patient' pat_id=cur_patient.id%}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Link to Medication Order">
+                        Back to Order
+                    </a>
         </div>
     </div>
     </div>

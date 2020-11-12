@@ -311,6 +311,7 @@ def patient(request, pat_id=None):
         'complete_orders': patient_rec.orders.filter(level_id__gte=6),
         'transactions': Transaction.objects.filter(patient_id=pat_id),
     }
+    context['transaction_form'] = TransactionForm(instance=patient_rec)
     return render(request, 'patient.html', context)
 
 
@@ -657,13 +658,13 @@ def new_transaction(request, pat_id):
         new_transaction = new_form.save()
         new_transaction.patient = cur_patient
         new_transaction.save()
-        return redirect('patient', patient_id=cur_patient.pk)
+        return redirect('patient', pat_id=cur_patient.pk)
 
     else:
         context = {
             'new_transaction': new_form,
             'show_modal': True,
-            'patient': cur_patient,
+            'cur_patient': cur_patient,
         }
         return render(request, 'new_transaction.html', context)
 

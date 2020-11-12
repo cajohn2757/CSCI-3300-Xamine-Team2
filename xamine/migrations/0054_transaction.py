@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('payment_method', models.CharField(max_length=128)),
                 ('amount', models.IntegerField(default=0)),
-                ('patient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='transaction_patient_id', to='xamine.patient')),
+                ('patient', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='transaction_patient_id', to='xamine.patient')),
             ],
         ),
     ]

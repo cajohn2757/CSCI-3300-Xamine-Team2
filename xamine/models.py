@@ -248,7 +248,7 @@ class Balance(models.Model):
 
 class Transaction(models.Model):
     """"Keeps track of all transactions"""
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='transaction_patient_id')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='transaction_patient_id', null=True, blank=True)
     payment_method = models.CharField(max_length=128)
     amount = models.IntegerField(default=0)
 

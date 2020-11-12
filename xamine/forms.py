@@ -13,10 +13,10 @@ yesnoch = (
 )
 
 paymentch = (
-    ('c_card', 'Credit Card'),
-    ('d_card', 'Debit Card'),
-    ('cash', 'Cash'),
-    ('check', 'Check'),
+    ('Credit', 'Credit Card'),
+    ('Debit', 'Debit Card'),
+    ('Cash', 'Cash'),
+    ('Check', 'Check'),
 )
 
 class PatientInfoForm(forms.ModelForm):
