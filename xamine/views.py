@@ -648,6 +648,7 @@ def invoice(request, order_id=None):
 
 
 def new_transaction(request, pat_id):
+    """Handles Creation of a transaction"""
     if not request.method == 'POST':
         raise Http404
     cur_patient = Patient.objects.get(pk=pat_id)
