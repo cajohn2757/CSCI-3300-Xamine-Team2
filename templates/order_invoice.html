@@ -106,22 +106,39 @@
                  <div class="row">
             <div class="col-md-12 col-12">
                 <div class="row collapse show mat-order">
+                    <div class="col-md-8 col-12 mt-1">
+                        <div hidden>
+                        </div>
+                    </div>
                     <div class="col-md-4 col-12 mt-1">
+                        <label>Subtotal:</label><label2> $</label2>
+                        {{ subtotal }}
+                    </div>
+                    <div class="container">
+                        <hr class="beautiful-line">
+                    </div>
+                    <div class="col-md-8 col-12 mt-1">
                         <div hidden>
                         <label hidden>Materials:</label>
                         {{ materials_info.material }}
                         </div>
                     </div>
-
                     <div class="col-md-4 col-12 mt-1">
+                        <label>Insurance Paid:</label><label2> $</label2>
+                        {{ insurance_pay }}
+                    </div>
+                    <div class="container">
+                        <hr class="beautiful-line">
+                    </div>
+                    <div class="col-md-8 col-12 mt-1">
                         <div hidden>
-                            <label>Quantity Used</label>
-                        {{ materials_info.quantity }}
+                        <label hidden>Materials:</label>
+                        {{ materials_info.material }}
                         </div>
                     </div>
                     <div class="col-md-4 col-12 mt-1">
-                        <label>Total:</label><label2> $</label2>
-                        {{ final_price }}
+                        <label>Total Balance:</label><label2> $</label2>
+                        {{ patient_pay }}
                     </div>
                     <div class="container">
                         <hr class="beautiful-line">

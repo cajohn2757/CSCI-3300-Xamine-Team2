@@ -640,11 +640,23 @@ def invoice(request, order_id=None):
         'name': invoice_info[0][0],
         'price': invoice_info[0][1]
     }
+    x = cur_order.modality_id
+    total_balance = Balance.objects.values_list('totalBalance').get(patient_id=cur_order.patient.id)[0]
+    ins_paid = 0
+    if x == 1:
+        ins_paid = total_balance - 100
+    if x == 2:
+        ins_paid = total_balance - 75
+    if x == 3:
+        ins_paid = total_balance - 200
+
     context = {
         'modality_info': modality_info,
         'medication_info': MedicationOrder.objects.get(pk=order_id),
         'materials_info': MaterialOrder.objects.get(pk=order_id),
-        'final_price': invoice_info[3],
+        'insurance_pay': ins_paid,
+        'patient_pay': total_balance-ins_paid,
+        'subtotal': invoice_info[3],
         'cur_order': cur_order,
     }
     return render(request, 'order_invoice.html', context)
