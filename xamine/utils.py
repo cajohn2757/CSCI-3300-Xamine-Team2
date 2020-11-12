@@ -167,7 +167,7 @@ def update_transactions(patientid):
     for x in transaction_list:
         if(x[2] == 0):
             patient_paying = Balance.objects.get(pk=patientid)
-            patient_paying.amount_Pat_Paid = F('amount_Pat_Paid') + x[1] + 1
+            patient_paying.amount_Pat_Paid = F('amount_Pat_Paid') + x[1]
             patient_paying.save()
             billed_pay = Transaction.objects.get(pk=x[0])
             billed_pay.billed = F('billed') + 1
