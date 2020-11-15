@@ -32,12 +32,15 @@
                 <span class="navbar-text">Logged in as {{ user.get_username }}</span>
             </div>
         </nav>
+
 <script>
     function changeLightDark(mode) {
         if(mode) {
             document.documentElement.setAttribute("color-mode", "dark");
+            localStorage.setItem("color-mode", "dark");
         } else if(!mode) {
             document.documentElement.setAttribute("color-mode", "light");
+            localStorage.setItem("color-mode", "light");
         }
     }
 </script>
