@@ -1,6 +1,6 @@
 :root[color-mode="light"] {
     --surface1: #858a92;
-    --surface2: ;
+    --surface2: #9dc4e3;
     --surface3: ;
     --element1: #373a40;
     --element2: #9e9e9e;
@@ -63,9 +63,6 @@ li {
 }
 span {
 
-}
-nav {
-  background-color: var(--secondary);
 }
 form {
 
@@ -243,18 +240,20 @@ tr th:last-child {
 .table-striped>tbody>tr:nth-child(odd)>th>a { 
    color: var(--element4);
  }
- .text-center>tbody>tr:nth-child(odd)>td,
-.text-center>tbody>tr:nth-child(odd)>th {
-   color: var(--element4);
- }
- .text-center>tbody>tr:nth-child(odd)>td>a,
-.text-center>tbody>tr:nth-child(odd)>th>a {
-   color: var(--element4);
- }
- .navbar {
+ nav {
      background-color: var(--primary);
+     color: var(--secondary);
+ }
+ nav>a{
+
+ }
+ .navbar-text{
+     color: var(--secondary);
+ }
+ .nav-link{
+    color: var(--secondary);
  }
  .btn{
      background-color: var(--secondary);
+     color: var(--element4);
  }
- 
