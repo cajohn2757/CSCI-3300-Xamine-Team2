@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" color-mode="light">
-    <body onload="getColorMode()">
 <head>
     {% load static %}
     <meta charset="utf-8">
@@ -40,9 +39,3 @@
 {% endblock %}
 </body>
 </html>
-
-<script>
-    function getColorMode() {
-        document.documentElement.setAttribute("color-mode", localStorage.getItem("color-mode"));
-    }
-</script>
