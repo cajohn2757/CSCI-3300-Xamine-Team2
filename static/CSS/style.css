@@ -243,6 +243,14 @@ tr th:last-child {
 .table-striped>tbody>tr:nth-child(odd)>th>a { 
    color: var(--element4);
  }
+ .text-center>tbody>tr:nth-child(odd)>td,
+.text-center>tbody>tr:nth-child(odd)>th {
+   color: var(--element4);
+ }
+ .text-center>tbody>tr:nth-child(odd)>td>a,
+.text-center>tbody>tr:nth-child(odd)>th>a {
+   color: var(--element4);
+ }
  .navbar {
      background-color: var(--primary);
  }
