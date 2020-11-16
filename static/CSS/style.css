@@ -240,7 +240,7 @@ tr th:last-child {
 .table-striped>tbody>tr:nth-child(odd)>th>a { 
    color: var(--element4);
  }
- nav {
+
  .text-center>tbody>tr:nth-child(odd)>td,
 .text-center>tbody>tr:nth-child(odd)>th {
    color: var(--element4);
@@ -250,7 +250,7 @@ tr th:last-child {
    color: var(--element4);
  }
  .navbar {
-     background-color: var(--surface3);
+     background-color: var(--primary);
      color: var(--secondary);
  }
  nav>a{
