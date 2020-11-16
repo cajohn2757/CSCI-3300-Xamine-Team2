@@ -145,9 +145,9 @@
         </form>
     {% endif %}
 
-    <!-- patient info section -->
+    <!-- order info section -->
     <div class="collapse show" id="patient_info">
-        <div class="container mt-1">
+        <div class="container mt-1 text-center">
             <div class="row">
                 <div class="col-12 mb-2">
                     <div class="display-4">Order # {{ cur_order.id }}</div>
@@ -193,75 +193,80 @@
                     </div>
                     <hr>
                 </div>
-                <div class="col-12">
-                    <span class="h4">Patient Information</span>
-                    <a href="{% url 'patient' pat_id=cur_order.patient.id %}" class="text-muted small ml-2" data-toggle="tooltip" data-placement="top" title="Link to Patient History">
-                        View More
-                    </a>
-                </div>
-
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="row mt-3">
-                        <div class="col-md-4 col-12">
-                            <span class="font-weight-bold">First Name:</span><br>
-                            {{ cur_order.patient.first_name }}
-                        </div>
-                        <div class="col-md-4 col-12">
-                            <span class="font-weight-bold">Middle Name:</span><br>
-                            {{ cur_order.patient.middle_name|default_if_none:'' }}
-                        </div>
-                        <div class="col-md-4 col-12">
-                            <span class="font-weight-bold">Last Name:</span><br>
-                            {{ cur_order.patient.last_name }}
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-4 col-12">
-                            <span class="font-weight-bold">DOB:</span><br>
-                            {{ cur_order.patient.birth_date }}
-                        </div>
-                        <div class="col-md-4 col-12">
-                            <span class="font-weight-bold">Phone Number:</span><br>
-                            {{ cur_order.patient.phone_number|phone_number }}
-                        </div>
-                        <div class="col-md-4 col-12">
-                            <span class="font-weight-bold">Email Address:</span><br>
-                            {{ cur_order.patient.email_info }}
-                        </div>
-                    </div>
-                    {% if show_medical %}
-                        <div class="row mt-1">
-                            <div class="col-12">
-                                <hr>
-                            </div>
-                            <div class="col-md-4 col-12">
-                                <span class="font-weight-bold">X-Ray Dye Allergy:</span><br>
-                                {{ cur_order.patient.allergy_xraydye|yesno:"Yes,No" }}
-                            </div>
-                            <div class="col-md-4 col-12">
-                                <span class="font-weight-bold">MRI Dye Allergy:</span><br>
-                                {{ cur_order.patient.allergy_mridye|yesno:"Yes,No" }}
-                            </div>
-                            <div class="col-md-4 col-12">
-                                <span class="font-weight-bold">Latex Allergy:</span><br>
-                                {{ cur_order.patient.allergy_latex|yesno:"Yes,No" }}
-                            </div>
-                            <div class="col-md-4 col-12">
-                                <span class="font-weight-bold">Asthma:</span><br>
-                                {{ cur_order.patient.allergy_asthma|yesno:"Yes,No" }}
-                            </div>
-                            <div class="col-md-8 col-12 text-area-wrap">
-                                <span class="font-weight-bold">Notes:</span><br>
-                                {{ cur_order.notes }}
-                            </div>
-                        </div>
-                    {% endif %}
+        </div>
+
+    <!-- patient info section -->    
+    <div class="container mt-1">
+        <div class="row text-center">
+            <div class="col-12">
+                <span class="h4 text-center">Patient Information</span>
+                <div>
+                <a href="{% url 'patient' pat_id=cur_order.patient.id %}" class="text-muted small ml-2" data-toggle="tooltip" data-placement="top" title="Link to Patient History">
+                    View More
+                </a>
                 </div>
             </div>
         </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row mt-3">
+                        <div class="col-md-12 col-12 text-center">
+                            <table class="table table-sm table-striped">
+                                <thead class="bg-info text-white">
+                                    <tr>
+                                        <th>First</th>
+                                        <th>Middle</th>
+                                        <th>Last</th>
+                                        <th>DOB</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{ cur_order.patient.first_name }}</td>
+                                    <td>{{ cur_order.patient.middle_name|default_if_none:'' }}</td>
+                                    <td>{{ cur_order.patient.last_name }}</td>
+                                    <td>{{ cur_order.patient.birth_date }}</td>
+                                    <td>{{ cur_order.patient.phone_number|phone_number }}</td>
+                                    <td>{{ cur_order.patient.email_info }}</td>
+                                 </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {% if show_medical %}
+                    <div class="row mt-1">
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-md-12 col-12">
+                            <table class="table table-sm table-striped">
+                                <thead class="bg-info text-white">
+                                    <tr>
+                                        <th>X-Ray Dye</th>
+                                        <th>MRI Dye</th>
+                                        <th>Latex</th>
+                                        <th>Asthma</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{ cur_order.patient.allergy_xraydye|yesno:"Yes,No" }}</td>
+                                    <td> {{ cur_order.patient.allergy_mridye|yesno:"Yes,No" }}</td>
+                                    <td>{{ cur_order.patient.allergy_latex|yesno:"Yes,No" }}</td>
+                                    <td>{{ cur_order.patient.allergy_asthma|yesno:"Yes,No" }}</td>
+                                    <td>{{ cur_order.notes }}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
+    </div>
+
     <!-- end physician section -->
 
     {% if cur_order.level_id < 5 %}
@@ -271,7 +276,7 @@
                 <div class="container mt-5">
                     <div class="row">
                         <div class="col-12">
-                            <span class="h4">Edit Order Information</span>
+                            <span class="h4 text-center">Edit Order Information</span>
                         </div>
                     </div>
                     <div class="row">
@@ -305,9 +310,9 @@
     <!-- order info section -->
     <div class="collapse show" id="order_info">
         <div class="container mt-5">
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-12">
-                    <span class="h4">Order Information</span>
+                    <span class="h4 text-center">Order Information</span>
                     {% if cur_order.level_id < 5 and False %}
                         <a href="#" onclick="editOrder()" class="text-muted small ml-2" data-toggle="tooltip" data-placement="top" title="Link to Order Info">
                             Edit
@@ -316,21 +321,33 @@
                 </div>
             </div>
             <div class="row mt-3">
-                <div class="col-md-4 col-12">
-                    <span class="font-weight-bold">Reason for Visit:</span><br>
-                    {{ cur_order.visit_reason }}
-                </div>
-                <div class="col-md-4 col-12">
-                    <span class="font-weight-bold">Imaging Needed:</span><br>
-                    {{ cur_order.imaging_needed }}
-                </div>
-                <div class="col-md-4 col-12">
-                    <span class="font-weight-bold">Modality:</span><br>
-                    {{ cur_order.modality }}
+                <div class="col-md-12 col-12 text-area-wrap">
+                    <table class="table table-sm table-striped">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th>Reason for Visit</th>
+                                <th>Imaging needed</th>
+                                <th>Modality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>{{ cur_order.visit_reason }}</td>
+                            <td>{{ cur_order.imaging_needed }}</td>
+                            <td>{{ cur_order.modality }}</td>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="col-12 text-area-wrap">
-                    <span class="font-weight-bold">Order Notes:</span><br>
-                    {{ cur_order.notes }}
+                    <table class="table table-sm table-striped">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th>Order Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>{{ cur_order.notes }}</td>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -375,9 +392,9 @@
             <div class="container mt-5">
                 <div class="row">
                     <div class="col-12">
-                        <div class="h4">Imaging</div>
+                        <div class="h4 text-center">Imaging</div>
                         {% if cur_order.imaged %}
-                            <div class="text-muted small mt-2">
+                            <div class="text-muted small mt-2 text-center">
                                 Imaging completed by {{ cur_order.imaged }} at {{ cur_order.imaged_time }}
                             </div>
                         {% endif %}
@@ -385,8 +402,8 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-12">
-                        <table class="table">
-                            <thead>
+                        <table class="table table-sm table-striped">
+                            <thead class="bg-info text-white">
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">File</th>
@@ -473,13 +490,13 @@
         <!-- end imaging section -->
     {% endif %}
 
-    {% if cur_order.level_id > 3 %}
+    {% if cur_order.level_id > 4 %}
         <!-- analysis section -->
         <div class="collapse show" id="order_info">
             <div class="container mt-5">
                 <div class="row">
-                    <div class="col-12">
-                        <span class="h4">Analysis Report</span>
+                    <div class="col-12 text-center">
+                        <span class="h4 text-center">Analysis Report</span>
                     </div>
                 </div>
                 <div class="row">
@@ -494,12 +511,24 @@
                                 </button>
                             </form>
                         {% else %}
-                            <div class='text-muted small mt-2 mb-4'>
+                            <div class='text-muted small mt-2 mb-4 text-center'>
                                 Completed by {{ cur_order.completed }} on {{ cur_order.completed_time }}
                             </div>
-                            <div class="text-area-wrap">
-                                {{ cur_order.report }}
-                            </div>
+                            <table class="table table-sm table-striped">
+                                <thead class="bg-info text-white">
+                                    <tr>
+                                        <th>Report</th>
+                                        <th>Timestamp</th>
+                                        <th>User</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td>{{ cur_order.report }}</td>
+                                    <td>{{ cur_order.completed_time }}</td>
+                                    <td>{{ cur_order.completed }}</td>
+                                </tbody>
+                            </table>
+        
                         {% endif %}
                     </div>
                 </div>
@@ -522,14 +551,14 @@
         <div class="collapse show" id="order_info">
             <div class="container mt-5">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 text-center">
                         <span class="h4">Appointment Cost</span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-2">
 
-                        <div class="text-area-wrap">
+                        <div class="text-area-wrap text-center">
                             Subtotal: ${{ sub_cost }}
                         </div>
                          {% if cur_order.level_id > 4 %}
