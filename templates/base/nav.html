@@ -1,12 +1,19 @@
-<nav class="navbar navbar-expand-md fixed-top navbar-light bg-light">
+<html lang="en" color-mode="light">
+<head>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/style.css' %}">
+</head>
+<body onload="getColorMode()">
+<body onload="navColor()">
+<nav class="navbar navbar-expand-md fixed-top navbar-light" id="nav-bar-stuff">
             <a class="navbar-brand" href="{% url 'index' %}"><i class="fas fa-x-ray"></i> XamineRIS</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar light--hidden colorbutton" href="javascript:changeLightDark(false)">
+            <a class="navbar light--hidden colorbutton" href="javascript:changeLightDark(false)" onclick="javascript:navColor(false)">
                 <img src="https://svgsilh.com/svg/159508.svg" style="width: 30px; height: 30px;">
             </a>
-            <a class="navbar dark--hidden colorbutton" href="javascript:changeLightDark(true)">
+            <a class="navbar dark--hidden colorbutton" href="javascript:changeLightDark(true)" onclick="javascript:navColor(true)">
                 <img src="https://svgsilh.com/svg/30466.svg" style="width: 30px; height: 30px;">
             </a>
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -32,6 +39,8 @@
                 <span class="navbar-text">Logged in as {{ user.get_username }}</span>
             </div>
         </nav>
+        </body>
+        </html>
 
 <script>
     function changeLightDark(mode) {
@@ -41,6 +50,14 @@
         } else if(!mode) {
             document.documentElement.setAttribute("color-mode", "light");
             localStorage.setItem("color-mode", "light");
+        }
+    }
+    function navColor(mode) {
+        if(mode) {
+            document.getElementById("nav-bar-stuff").className = "navbar navbar-expand-md fixed-top navbar-dark";
+        }
+        else if(!mode) {
+            document.getElementById("nav-bar-stuff").className = "navbar navbar-expand-md fixed-top navbar-light";
         }
     }
 </script>
