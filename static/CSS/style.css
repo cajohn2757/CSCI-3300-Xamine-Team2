@@ -240,7 +240,19 @@ tr th:last-child {
 .table-striped>tbody>tr:nth-child(odd)>th>a { 
    color: var(--element4);
  }
+<<<<<<< HEAD
  nav {
+=======
+ .text-center>tbody>tr:nth-child(odd)>td,
+.text-center>tbody>tr:nth-child(odd)>th {
+   color: var(--element4);
+ }
+ .text-center>tbody>tr:nth-child(odd)>td>a,
+.text-center>tbody>tr:nth-child(odd)>th>a {
+   color: var(--element4);
+ }
+ .navbar {
+>>>>>>> 6c60b0c43d1ce4bb14e0face841719059336ed41
      background-color: var(--primary);
      color: var(--secondary);
  }
