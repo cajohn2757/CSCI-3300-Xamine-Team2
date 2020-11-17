@@ -1,18 +1,18 @@
 <html lang="en" color-mode="light">
 <head>
 {% load static %}
+<body onload= 'alert("working")'>
 <link rel="stylesheet" type="text/css" href="{% static 'CSS/style.css' %}">
 </head>
-<body onload="getColorMode()">
-<nav class="navbar navbar-expand-md fixed-top navbar-light" id="nav-bar-stuff" onload="navColor()">
+<nav class="navbar navbar-expand-md fixed-top navbar-light" id="nav-bar-stuff">
             <a class="navbar-brand" href="{% url 'index' %}"><i class="fas fa-x-ray"></i> XamineRIS</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar light--hidden colorbutton" href="javascript:changeLightDark(false)" onclick="javascript:navColor(false)">
+            <a class="navbar light--hidden colorbutton" href="javascript:changeLightDark(false)" >
                 <img src="https://svgsilh.com/svg/159508.svg" style="width: 30px; height: 30px;">
             </a>
-            <a class="navbar dark--hidden colorbutton" href="javascript:changeLightDark(true)" onclick="javascript:navColor(true)">
+            <a class="navbar dark--hidden colorbutton" href="javascript:changeLightDark(true)" >
                 <img src="https://svgsilh.com/svg/30466.svg" style="width: 30px; height: 30px;">
             </a>
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -45,18 +45,28 @@
     function changeLightDark(mode) {
         if(mode) {
             document.documentElement.setAttribute("color-mode", "dark");
+            document.getElementById("nav-bar-stuff").className = "navbar navbar-expand-md fixed-top navbar-dark";
+            localStorage.setItem("nav-bar-stuff", "navbar navbar-expand-md fixed-top navbar-dark");
             localStorage.setItem("color-mode", "dark");
         } else if(!mode) {
             document.documentElement.setAttribute("color-mode", "light");
+            document.getElementById("nav-bar-stuff").className = "navbar navbar-expand-md fixed-top navbar-light";
+            localStorage.setItem("nav-bar-stuff", "navbar navbar-expand-md fixed-top navbar-light");
             localStorage.setItem("color-mode", "light");
         }
     }
-    function navColor(mode) {
-        if(mode) {
-            document.getElementById("nav-bar-stuff").className = "navbar navbar-expand-md fixed-top navbar-dark";
+    function navColor() {
+        var colorMode = localStorage.getItem("nav-bar-stuff")
+        if(colorMode != null) {
+            document.getElementById("nav-bar-stuff").className = colorMode;
         }
-        else if(!mode) {
-            document.getElementById("nav-bar-stuff").className = "navbar navbar-expand-md fixed-top navbar-light";
+    }
+    window.onload = function() {
+        navColor();
+        var colorMode = localStorage.getItem("color-mode");
+
+        if(colorMode != null) {
+        document.documentElement.setAttribute("color-mode", colorMode);
         }
     }
 </script>

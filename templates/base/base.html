@@ -43,6 +43,10 @@
 
 <script>
     function getColorMode() {
-        document.documentElement.setAttribute("color-mode", localStorage.getItem("color-mode"));
+        var colorMode = localStorage.getItem("color-mode");
+
+        if(colorMode != null) {
+        document.documentElement.setAttribute("color-mode", colorMode);
+        }
     }
 </script>
