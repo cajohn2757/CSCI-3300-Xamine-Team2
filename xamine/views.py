@@ -641,7 +641,7 @@ def invoice(request, order_id=None):
         'price': invoice_info[0][1]
     }
     x = cur_order.modality_id
-    total_balance = Balance.objects.values_list('totalBalance').get(patient_id=cur_order.patient.id)[0]
+    total_balance = get_order_cost(order_id)[3]
     ins_paid = 0
     if x == 1:
         ins_paid = total_balance - 100
