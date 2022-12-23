@@ -11,8 +11,8 @@ class ChoiceInLine(admin.TabularInline):
     extra = 2
 
 
+@admin.register(Inbox)
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [(None, {'fields': ['patient_name']}), ('Date Information', {'fields': ['pub_date'], 'classes': ['collapse']}),]
     inlines = [ChoiceInLine]
 
-admin.site.register(Inbox, QuestionAdmin)

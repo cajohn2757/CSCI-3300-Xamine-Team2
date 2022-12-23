@@ -5,7 +5,7 @@ from colorful.fields import RGBColorField
 from intl_tel_input.widgets import IntlTelInputWidget
 from xamine.models import Patient, Order, Image, MedicationOrder, MaterialOrder, ColorScheme, Transaction
 
-from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
+from bootstrap_datepicker_plus.widgets import DatePickerInput, DateTimePickerInput
 
 yesnoch = (
     (False, 'No'),
