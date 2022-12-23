@@ -103,25 +103,28 @@ def update_balance(patientid):
     # Med order and mat order in try/except as they might not exist
     for x in order_list:
         info = get_order_cost(x[0])
-        if x[2] == 0: # Modality
-            running_cost += info[0][1] # Checks billed value
-            order_row = Order.objects.get(pk=x[0])
-            order_row.modality_billed = F('modality_billed') + 1
-            order_row.save()
         try:
-            if info[1][2] == 0: # Medication
-                running_cost += info[1][3] # Checks billed value
-                medication_row = MedicationOrder.objects.get(order=x[0])
-                medication_row.billed = F('billed') + 1
-                medication_row.save()
-        except:
-            pass
-        try:
-            if info[2][2] == 0: # Materials
-                running_cost += info[2][3] # Checks billed value
-                material_row = MaterialOrder.objects.get(order=x[0])
-                material_row.billed = F('billed') + 1
-                material_row.save()
+            if x[2] == 0: # Modality
+                running_cost += info[0][1] # Checks billed value
+                order_row = Order.objects.get(pk=x[0])
+                order_row.modality_billed = F('modality_billed') + 1
+                order_row.save()
+            try:
+                if info[1][2] == 0: # Medication
+                    running_cost += info[1][3] # Checks billed value
+                    medication_row = MedicationOrder.objects.get(order=x[0])
+                    medication_row.billed = F('billed') + 1
+                    medication_row.save()
+            except:
+                pass
+            try:
+                if info[2][2] == 0: # Materials
+                    running_cost += info[2][3] # Checks billed value
+                    material_row = MaterialOrder.objects.get(order=x[0])
+                    material_row.billed = F('billed') + 1
+                    material_row.save()
+            except:
+                pass
         except:
             pass
 

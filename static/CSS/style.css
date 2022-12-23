@@ -15,14 +15,14 @@
     --test: red;
 }
 :root[color-mode="dark"] {
-    --surface1: #ddeffc;
-    --surface2: #9cc3d4;
+    --surface1: #778f9e;
+    --surface2: #3a5864;
     --surface3: #31c7c7;
     --surface4: rgb(59, 59, 57);
     --element1: #0499fd;
     --element2: #e6c382;
     --element3: #ffffff;
-    --element4: #101011;
+    --element4: #101100;
     --element5: rgb(248, 215, 221);
     --element6: rgb(253, 193, 81);
     --primary: #1a1b1b;
@@ -279,3 +279,4 @@ tr th:last-child {
  .modal-content{
      background-color: var(--primary);
  }
+ 
